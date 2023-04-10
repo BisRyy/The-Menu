@@ -21,6 +21,7 @@ const StyledRoot = styled('div')(({ theme }) => ({
 const StyledSection = styled('div')(({ theme }) => ({
   width: '100%',
   maxWidth: 580,
+  height: '100vh',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -68,7 +69,7 @@ export default function RegisterPage() {
 
             <Divider sx={{ my: 3 }}>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {'OR REGISTER WITH'}
+                {'OR'}
               </Typography>
             </Divider>
 
@@ -90,8 +91,11 @@ export default function RegisterPage() {
 
         {mdUp && (
           <StyledSection>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome
+            <Typography variant="h3" sx={{ px: 5, mt: 3 }}>
+              Adventure starts here 🚀
+            </Typography>
+            <Typography variant="subtitle" sx={{ px: 5, mb: 5 }}>
+              Manage your restaurant menu from your fingertips.{' '}
             </Typography>
             <img src="/assets/illustrations/illustration_login.png" alt="login" />
           </StyledSection>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
-import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, Box } from '@mui/material';
+import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, Box, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
@@ -43,13 +43,34 @@ export default function RegisterForm() {
           }}
         />
         <Box>
-          <Checkbox
-            name="remember"
-            label="Agree to terms and conditions"
-            checked={termsChecked}
-            onClick={() => setTermsChecked(!termsChecked)}
-          />
-          Agree to terms and conditions
+          {/* <FormControlLabel
+            control={<Checkbox />}
+            label={
+              <>
+                <span>I agree to </span>
+                <Link href="/" passHref>
+                  <Link onClick={(e) => e.preventDefault()}>privacy policy & terms</Link>
+                </Link>
+              </>
+            }
+          /> */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              // cursor: 'pointer',
+            }}
+          >
+            <Checkbox
+              name="remember"
+              label="Agree to terms and conditions"
+              checked={termsChecked}
+              onClick={() => setTermsChecked(!termsChecked)}
+            />
+            <Typography onClick={() => setTermsChecked(!termsChecked)}>I agree to &nbsp; </Typography>
+            <Link href="/terms"> privacy policy & terms.</Link>
+          </Box>
+
           <LoadingButton
             fullWidth
             size="large"
@@ -63,8 +84,8 @@ export default function RegisterForm() {
         </Box>
       </Stack>
 
-      <Stack direction="row" alignItems="center" gap={1} sx={{ my: 2 }}>
-        Already have an account?
+      <Stack direction="row" justifyContent="center" gap={1} sx={{ my: 2 }}>
+        Already have an account? {''}
         <Link variant="subtitle2" underline="hover" href="/login">
           {' '}
           Log in

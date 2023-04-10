@@ -73,9 +73,11 @@ export default function LoginPage() {
               Sign in to Minimal
             </Typography>
 
-            <Typography variant="body2" sx={{ mb: 5 }}>
-              Don’t have an account? {''}
-              <Link variant="subtitle2" href='/register'>Get started</Link>
+            <Typography variant="body2" sx={{ mb: 3 }}>
+              New on our platform? {''}
+              <Link variant="subtitle2" href="/register">
+                Create an account
+              </Link>
             </Typography>
 
             <Stack direction="row" spacing={2}>

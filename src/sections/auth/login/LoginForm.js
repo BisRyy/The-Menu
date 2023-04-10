@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
-import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
+import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, FormControlLabel } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
@@ -12,6 +12,7 @@ export default function LoginForm() {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const handleClick = () => {
     navigate('/dashboard', { replace: true });
@@ -39,8 +40,9 @@ export default function LoginForm() {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Checkbox name="remember" about='djjd'/>
-        <Link variant="subtitle2" underline="hover" href='/forgot'>
+        {/* <Checkbox name="remember" label="Remember me" /> */}
+        <FormControlLabel control={<Checkbox />} label="Remember Me" onClick={()=> setRememberMe(!rememberMe)}/>
+        <Link variant="subtitle2" underline="hover" href="/forgot">
           Forgot password?
         </Link>
       </Stack>
