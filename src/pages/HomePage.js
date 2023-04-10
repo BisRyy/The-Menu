@@ -1,13 +1,10 @@
-import { Typography } from "@mui/material";
+import { Box } from "@mui/material";
+import Hero from "../sections/home/hero";
 
 export default function HomePage() {
   return (
     <>
-      <Typography align="center">NavBar</Typography>
-      <Typography align="center">Hero</Typography>
-      <Typography align="center">Feature</Typography>
-      <Typography align="center">Contact</Typography>
-      <Typography align="center">Footer</Typography>
+      <Hero />
     </>
   );
 }

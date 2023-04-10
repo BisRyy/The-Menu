@@ -35,6 +35,7 @@ export default function Router() {
       path: 'login',
       element: <LoginPage />,
     },
+    { path: 'home', element: <HomePage /> },
     {
       element: <SimpleLayout />,
       children: [
