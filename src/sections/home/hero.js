@@ -6,9 +6,11 @@ export default function Hero() {
     display: 'flex',
     justifyContent: 'center',
     gap: theme.spacing(5),
-    marginTop: theme.spacing(3),
+    // marginTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+    alignItems: 'center',
     [theme.breakpoints.down('md')]: {
-      flexDirection: 'column',
+      flexDirection: 'column-reverse',
       alignItems: 'center',
       textAlign: 'center',
     },
@@ -26,7 +28,7 @@ export default function Hero() {
 
   return (
     <>
-      <Box sx={{ backgroundColor: '#E6F0FF', minHeight: '80vh' }}>
+      <Box sx={{ backgroundColor: '#E6F0FF', minHeight: '80vh', pb:3 }}>
         <Container>
           <CustomBox>
             <Box sx={{ flex: '1' }}>
@@ -36,23 +38,23 @@ export default function Hero() {
                   fontSize: '18px',
                   color: '#687690',
                   fontWeight: '500',
-                  mt: 10,
+                  mt: { md: 10, sm: 0},
                   mb: 4,
                 }}
               >
                 Welcome to the Digital World
               </Typography>
-              <Title variant="h1">Manage your Retaurants Menu from your fingertips.</Title>
+              <Title variant="h1">Manage your Restaurants Menu from your fingertips.</Title>
               <Typography variant="body2" sx={{ fontSize: '18px', color: '#5A6473', my: 4 }}>
                 Be the first to get the best digital menu deals before they hit the mass market! Hot foreclosure deals
                 with one simple search!
               </Typography>
-              <Button variant="contained">More About Us</Button>
+              <Button variant="contained" size="large">More About Us</Button>
             </Box>
 
-            <Box sx={{ flex: '1.25' }}>
+            <Box sx={{flex: '1.25' }}>
               <img
-                src="/assets/images/covers/cover_4.jpg"
+                src="/assets/menu1.png"
                 alt="heroImg"
                 style={{ maxWidth: '100%', marginBottom: '2rem' }}
               />
