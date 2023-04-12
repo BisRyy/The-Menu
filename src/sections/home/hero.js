@@ -38,7 +38,7 @@ export default function Hero() {
                   fontSize: '18px',
                   color: '#687690',
                   fontWeight: '500',
-                  mt: { md: 10, sm: 0},
+                  mt: { md: 6, sm: 0},
                   mb: 4,
                 }}
               >

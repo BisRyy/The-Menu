@@ -13,6 +13,7 @@ import MenuPage from './pages/MenuPage';
 import ProductsListPage from './pages/ProductsListPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
+import Test from './pages/Test';
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +41,7 @@ export default function Router() {
       element: <SimpleLayout />,
       children: [
         { element: <Navigate to="/dashboard" />, index: true },
-        { path: 'home', element: <HomePage /> },
+        { path: 'test', element: <Test /> },
         { path: 'register', element: <RegisterPage /> },
         { path: '404', element: <Page404 /> },
         { path: '*', element: <Navigate to="/404" /> },
