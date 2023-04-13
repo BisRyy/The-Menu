@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
@@ -14,6 +15,7 @@ import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
 import navConfig from './config';
+import { logout } from '../../../redux/authSlice';
 
 // ----------------------------------------------------------------------
 
@@ -36,6 +38,14 @@ Nav.propTypes = {
 
 export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login', { replace: true })
+  };
+   
 
   const isDesktop = useResponsive('up', 'lg');
 
@@ -97,7 +107,7 @@ export default function Nav({ openNav, onCloseNav }) {
             </Typography> */}
           </Box>
 
-          <Button href="/home" variant="contained">
+          <Button onClick={handleLogout} variant="contained">
             Log out
           </Button>
         </Stack>

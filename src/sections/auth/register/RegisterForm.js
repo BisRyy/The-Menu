@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 // @mui
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, Box, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
+import { register } from '../../../redux/authSlice';
 
 // ----------------------------------------------------------------------
 
@@ -21,31 +24,48 @@ export default function RegisterForm() {
   const [termsChecked, setTermsChecked] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleClick = () => {
-    navigate('/dashboard', { replace: true });
-  };
+  const user = useSelector((state) => state.auth.user);
 
-  const handleRegister = () => {
-    console.table({ firstName, lastName, restaurant, email, password });
+  const dispatch = useDispatch();
 
-    setTermsChecked(false);
-    setFirstName('');
-    setLastName('');
-    setRestaurant('');
-    setEmail('');
-    setPassword('');
-    setLoading(true);
-    setTimeout(() => {
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard', { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  const handleRegister = async () => {
+    
+    try {
+      setLoading(true);
+      const { data } = await axios.post(`/api/register`, {
+        firstName,
+        lastName,
+        restaurant,
+        email,
+        password,
+      });
+      dispatch(register(data));
+      console.table(data);
+
+    } catch (error) {
+
+      console.log(error);
+      dispatch(register({ firstName, lastName, restaurant, email, password }));
+      console.table({ firstName, lastName, restaurant, email, password });
+
+    } finally {
       setLoading(false);
-      handleClick();
-    }, 2000);
+    }
+
   };
 
   return (
     <>
       <Stack spacing={3}>
         <div style={{ display: 'flex', gap: 4 }}>
-          <TextField name="first" label="First Name" onChange={(e) => setFirstName(e.target.value)} />
+          <TextField name="first" label="First Name"onChange={(e) => setFirstName(e.target.value)} />
           <TextField name="last" label="Last Name" onChange={(e) => setLastName(e.target.value)} />
         </div>
         <TextField name="restaurant" label="Restaurant Name" onChange={(e) => setRestaurant(e.target.value)} />
@@ -55,6 +75,7 @@ export default function RegisterForm() {
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
           InputProps={{
             endAdornment: (
@@ -67,22 +88,10 @@ export default function RegisterForm() {
           }}
         />
         <Box>
-          {/* <FormControlLabel
-            control={<Checkbox />}
-            label={
-              <>
-                <span>I agree to </span>
-                <Link href="/" passHref>
-                  <Link onClick={(e) => e.preventDefault()}>privacy policy & terms</Link>
-                </Link>
-              </>
-            }
-          /> */}
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
-              // cursor: 'pointer',
             }}
           >
             <Checkbox
@@ -101,7 +110,8 @@ export default function RegisterForm() {
             type="submit"
             variant="contained"
             onClick={handleRegister}
-            disabled={!termsChecked || !firstName || !lastName || !restaurant || !email || !password}
+            loading={loading}
+            disabled={!termsChecked || !firstName || !lastName || !restaurant || !email || !password || loading}
           >
             Register
           </LoadingButton>
