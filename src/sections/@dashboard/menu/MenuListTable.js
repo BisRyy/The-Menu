@@ -86,6 +86,8 @@ export default function MenuListTable() {
     //   dispatch(get(res.data));
     // });
     dispatch(get(MENU));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
 
@@ -114,6 +116,13 @@ export default function MenuListTable() {
   const handleDelete = () => {
     dispatch(remove(open[1]));
     handleCloseMenu();
+  };
+
+  const handleDeleteSelected = () => {
+    selected.forEach((id) => {
+      dispatch(remove(id));
+      setSelected([]);
+    });
   };
 
   const handleRequestSort = (event, property) => {
@@ -183,7 +192,7 @@ export default function MenuListTable() {
         </Stack>
 
         <Card>
-          <MenuListToolbar selected={selected} numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <MenuListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} handleDeleteSelected={handleDeleteSelected}/>
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>

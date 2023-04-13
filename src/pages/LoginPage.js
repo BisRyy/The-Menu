@@ -13,6 +13,8 @@ import { LoginForm } from '../sections/auth/login';
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled('div')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-around',
   [theme.breakpoints.up('md')]: {
     display: 'flex',
   },
@@ -21,6 +23,7 @@ const StyledRoot = styled('div')(({ theme }) => ({
 const StyledSection = styled('div')(({ theme }) => ({
   width: '100%',
   maxWidth: 480,
+  marginLeft: 'auto',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',

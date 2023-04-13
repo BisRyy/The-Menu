@@ -25,6 +25,7 @@ export function responsiveFontSizes({ sm, md, lg }) {
 // ----------------------------------------------------------------------
 
 const FONT_PRIMARY = 'Public Sans, sans-serif'; // Google Font
+// const FONT_SPECIAL = 'Cormorant Upright, serif'; // Google Font
 // const FONT_SECONDARY = 'CircularStd, sans-serif'; // Local Font
 
 const typography = {

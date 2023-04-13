@@ -28,7 +28,7 @@ export default function Hero() {
 
   return (
     <>
-      <Box sx={{ backgroundColor: '#E6F0FF', minHeight: '80vh', pb:3 }}>
+      <Box sx={{ backgroundColor: '#E6F0FF', minHeight: '80vh', pb: 3, display:"flex", alignItems:"center", justifyContent:"center" }}>
         <Container>
           <CustomBox>
             <Box sx={{ flex: '1' }}>
@@ -38,26 +38,26 @@ export default function Hero() {
                   fontSize: '18px',
                   color: '#687690',
                   fontWeight: '500',
-                  mt: { md: 6, sm: 0},
+                  mt: { md: 6, sm: 0 },
                   mb: 4,
                 }}
               >
                 Welcome to the Digital World
               </Typography>
-              <Title variant="h1">Manage your Restaurants Menu from your fingertips.</Title>
+              <Title variant="h1" >
+                Manage your Restaurants Menu from your fingertips.
+              </Title>
               <Typography variant="body2" sx={{ fontSize: '18px', color: '#5A6473', my: 4 }}>
                 Be the first to get the best digital menu deals before they hit the mass market! Hot foreclosure deals
                 with one simple search!
               </Typography>
-              <Button variant="contained" size="large">More About Us</Button>
+              <Button variant="contained" size="large">
+                More About Us
+              </Button>
             </Box>
 
-            <Box sx={{flex: '1.25' }}>
-              <img
-                src="/assets/menu1.png"
-                alt="heroImg"
-                style={{ maxWidth: '100%', marginBottom: '2rem' }}
-              />
+            <Box sx={{ flex: '1.25' }}>
+              <img src="/assets/menu1.png" alt="heroImg" style={{ maxWidth: '100%' }} />
             </Box>
           </CustomBox>
         </Container>

@@ -126,11 +126,11 @@ const Footer = () => {
               You’ll find your next home, in any style you prefer.
             </Typography>
 
-            {/* <IconBox>
-              <img src="/assets/images/covers/cover_21.jpg" alt="fbIcon" style={{ cursor: 'pointer' }} />
+            <IconBox>
+              {/* <img src="/assets/images/covers/cover_21.jpg" alt="fbIcon" style={{ cursor: 'pointer' }} />
               <img src="/assets/images/covers/cover_21.jpg" alt="twitterIcon" style={{ cursor: 'pointer' }} />
-              <img src="/assets/images/covers/cover_21.jpg" alt="linkedinIcon" style={{ cursor: 'pointer' }} />
-            </IconBox> */}
+              <img src="/assets/images/covers/cover_21.jpg" alt="linkedinIcon" style={{ cursor: 'pointer' }} /> */}
+            </IconBox>
           </Box>
         </CustomContainer>
       </CustomContainer>

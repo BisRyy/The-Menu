@@ -1,37 +1,82 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 // @mui
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, Box, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
+import { register } from '../../../redux/authSlice';
 
 // ----------------------------------------------------------------------
 
 export default function RegisterForm() {
   const navigate = useNavigate();
 
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [restaurant, setRestaurant] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const [showPassword, setShowPassword] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleClick = () => {
-    navigate('/dashboard', { replace: true });
+  const user = useSelector((state) => state.auth.user);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard', { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  const handleRegister = async () => {
+    
+    try {
+      setLoading(true);
+      const { data } = await axios.post(`/api/register`, {
+        firstName,
+        lastName,
+        restaurant,
+        email,
+        password,
+      });
+      dispatch(register(data));
+      console.table(data);
+
+    } catch (error) {
+
+      console.log(error);
+      dispatch(register({ firstName, lastName, restaurant, email, password }));
+      console.table({ firstName, lastName, restaurant, email, password });
+
+    } finally {
+      setLoading(false);
+    }
+
   };
 
   return (
     <>
       <Stack spacing={3}>
         <div style={{ display: 'flex', gap: 4 }}>
-          <TextField name="first" label="First Name" />
-          <TextField name="last" label="Last Name" />
+          <TextField name="first" label="First Name"onChange={(e) => setFirstName(e.target.value)} />
+          <TextField name="last" label="Last Name" onChange={(e) => setLastName(e.target.value)} />
         </div>
-        <TextField name="email" label="Restaurant Name" />
-        <TextField name="email" label="Email address" />
+        <TextField name="restaurant" label="Restaurant Name" onChange={(e) => setRestaurant(e.target.value)} />
+        <TextField name="email" label="Email address" onChange={(e) => setEmail(e.target.value)} />
 
         <TextField
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -43,22 +88,10 @@ export default function RegisterForm() {
           }}
         />
         <Box>
-          {/* <FormControlLabel
-            control={<Checkbox />}
-            label={
-              <>
-                <span>I agree to </span>
-                <Link href="/" passHref>
-                  <Link onClick={(e) => e.preventDefault()}>privacy policy & terms</Link>
-                </Link>
-              </>
-            }
-          /> */}
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
-              // cursor: 'pointer',
             }}
           >
             <Checkbox
@@ -76,8 +109,9 @@ export default function RegisterForm() {
             size="large"
             type="submit"
             variant="contained"
-            onClick={handleClick}
-            disabled={!termsChecked}
+            onClick={handleRegister}
+            loading={loading}
+            disabled={!termsChecked || !firstName || !lastName || !restaurant || !email || !password || loading}
           >
             Register
           </LoadingButton>
