@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Box, Button, Card, Link } from '@mui/material';
 import axios from 'axios';
 import { decrement, increment, incrementByAmount } from '../redux/counterSlice';
-import { add, get, remove } from '../redux/productSlice';
+import { get, add, remove } from '../redux/productSlice'
 
 export default function Test() {
   const count = useSelector((state) => state.counter.value);

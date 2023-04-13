@@ -1,7 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
 // @mui
 import {
   Card,
@@ -30,7 +32,8 @@ import Scrollbar from '../../../components/scrollbar';
 import { MenuListHead, MenuListToolbar } from '.';
 
 // mock
-import MENULIST from '../../../_mock/menuItem';
+import MENU from '../../../_mock/menuItem';
+import { add, get, remove } from '../../../redux/menuSlice';
 
 // ----------------------------------------------------------------------
 
@@ -69,13 +72,24 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_menu) => _menu.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserPage() {
-  const [open, setOpen] = useState(null);
+export default function MenuListTable() {
+  const MENULIST = useSelector((state) => state.menu.list);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // axios.get('http://localhost:3200/bbqs').then((res) => {
+    //   dispatch(get(res.data));
+    // });
+    dispatch(get(MENU));
+  }, []);
+  
+
+  const [open, setOpen] = useState([null, null]);
 
   const [page, setPage] = useState(0);
 
@@ -89,12 +103,17 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
+  const handleOpenMenu = (event, id) => {
+    setOpen([event.currentTarget, id]);
   };
 
   const handleCloseMenu = () => {
-    setOpen(null);
+    setOpen([null, null]);
+  };
+
+  const handleDelete = () => {
+    dispatch(remove(open[1]));
+    handleCloseMenu();
   };
 
   const handleRequestSort = (event, property) => {
@@ -105,7 +124,7 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = MENULIST.map((n) => n.name);
+      const newSelecteds = MENULIST.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -143,9 +162,9 @@ export default function UserPage() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - MENULIST.length) : 0;
 
-  const filteredUsers = applySortFilter(MENULIST, getComparator(order, orderBy), filterName);
+  const filteredList = applySortFilter(MENULIST, getComparator(order, orderBy), filterName);
 
-  const isNotFound = !filteredUsers.length && !!filterName;
+  const isNotFound = !filteredList.length && !!filterName;
 
   return (
     <>
@@ -164,7 +183,7 @@ export default function UserPage() {
         </Stack>
 
         <Card>
-          <MenuListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <MenuListToolbar selected={selected} numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -179,14 +198,14 @@ export default function UserPage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, price, img, dsc, status } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
+                  {filteredList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    const { id, name, price, img, dsc, status = 'unavailable' } = row;
+                    const selectedList = selected.indexOf(id) !== -1;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedList}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
+                          <Checkbox checked={selectedList} onChange={(event) => handleClick(event, id)} />
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
@@ -211,7 +230,7 @@ export default function UserPage() {
                         <TableCell align="left">{dsc}</TableCell>
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
+                          <IconButton size="large" color="inherit" onClick={(event) => handleOpenMenu(event, id)}>
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
@@ -265,8 +284,8 @@ export default function UserPage() {
       </Container>
 
       <Popover
-        open={Boolean(open)}
-        anchorEl={open}
+        open={Boolean(open[0])}
+        anchorEl={open[0]}
         onClose={handleCloseMenu}
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -282,12 +301,12 @@ export default function UserPage() {
           },
         }}
       >
-        <MenuItem>
+        <MenuItem onClick={() => console.log('edit', open[1])}>
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
           Edit
         </MenuItem>
 
-        <MenuItem sx={{ color: 'error.main' }}>
+        <MenuItem sx={{ color: 'error.main' }} onClick={handleDelete} >
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Delete
         </MenuItem>
