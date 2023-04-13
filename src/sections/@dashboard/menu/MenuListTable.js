@@ -116,6 +116,13 @@ export default function MenuListTable() {
     handleCloseMenu();
   };
 
+  const handleDeleteSelected = () => {
+    selected.forEach((id) => {
+      dispatch(remove(id));
+      setSelected([]);
+    });
+  };
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -183,7 +190,7 @@ export default function MenuListTable() {
         </Stack>
 
         <Card>
-          <MenuListToolbar selected={selected} numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <MenuListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} handleDeleteSelected={handleDeleteSelected}/>
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>

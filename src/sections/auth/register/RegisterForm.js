@@ -11,27 +11,51 @@ import Iconify from '../../../components/iconify';
 export default function RegisterForm() {
   const navigate = useNavigate();
 
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [restaurant, setRestaurant] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const [showPassword, setShowPassword] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleClick = () => {
     navigate('/dashboard', { replace: true });
+  };
+
+  const handleRegister = () => {
+    console.table({ firstName, lastName, restaurant, email, password });
+
+    setTermsChecked(false);
+    setFirstName('');
+    setLastName('');
+    setRestaurant('');
+    setEmail('');
+    setPassword('');
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      handleClick();
+    }, 2000);
   };
 
   return (
     <>
       <Stack spacing={3}>
         <div style={{ display: 'flex', gap: 4 }}>
-          <TextField name="first" label="First Name" />
-          <TextField name="last" label="Last Name" />
+          <TextField name="first" label="First Name" onChange={(e) => setFirstName(e.target.value)} />
+          <TextField name="last" label="Last Name" onChange={(e) => setLastName(e.target.value)} />
         </div>
-        <TextField name="email" label="Restaurant Name" />
-        <TextField name="email" label="Email address" />
+        <TextField name="restaurant" label="Restaurant Name" onChange={(e) => setRestaurant(e.target.value)} />
+        <TextField name="email" label="Email address" onChange={(e) => setEmail(e.target.value)} />
 
         <TextField
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
+          onChange={(e) => setPassword(e.target.value)}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -76,8 +100,8 @@ export default function RegisterForm() {
             size="large"
             type="submit"
             variant="contained"
-            onClick={handleClick}
-            disabled={!termsChecked}
+            onClick={handleRegister}
+            disabled={!termsChecked || !firstName || !lastName || !restaurant || !email || !password}
           >
             Register
           </LoadingButton>

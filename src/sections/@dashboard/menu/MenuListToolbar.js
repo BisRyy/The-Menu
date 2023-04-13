@@ -36,9 +36,10 @@ MenuListToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,
+  handleDeleteSelected: PropTypes.func,
 };
 
-export default function MenuListToolbar({ selected, numSelected, filterName, onFilterName }) {
+export default function MenuListToolbar({ numSelected, filterName, onFilterName, handleDeleteSelected }) {
   return (
     <StyledRoot
       sx={{
@@ -67,7 +68,7 @@ export default function MenuListToolbar({ selected, numSelected, filterName, onF
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton onClick={() => console.log(selected)} >
+          <IconButton onClick={handleDeleteSelected} >
             <Iconify icon="eva:trash-2-fill" />
           </IconButton>
         </Tooltip>
