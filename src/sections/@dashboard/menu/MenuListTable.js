@@ -86,6 +86,8 @@ export default function MenuListTable() {
     //   dispatch(get(res.data));
     // });
     dispatch(get(MENU));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
 

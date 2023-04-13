@@ -40,7 +40,7 @@ export default function DashboardLayout() {
   const user = useSelector((state) => state.auth.user);
   useEffect(() => {
     if (!user) {
-      navigate('/login', { replace: true });
+      navigate('/home', { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
