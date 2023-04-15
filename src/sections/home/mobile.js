@@ -3,10 +3,10 @@ import { Box, Button, Container, Typography } from '@mui/material';
 export default function Mobile() {
   return (
     <Box sx={{ backgroundColor: '#E6F0FF', minHeight: '80vh', p: 3 }}>
-      {/* <Container> */}
+      <Container>
       <Box
         sx={{
-          display: 'flex',
+          display: {md:"flex", sm:"none"},
           justifyContent: 'center',
           gap: 5,
           flexDirection: 'column-reverse',
@@ -70,7 +70,7 @@ export default function Mobile() {
               alignItems: 'center',
               justifyContent: 'center',
               flex: "2",
-              gap: 2,
+              gap: 8,
             }}
           >
             <img src="/assets/mobile.png" alt="heroImg" style={{ maxHeight: 500, marginBottom: '2rem' }} />
@@ -86,7 +86,7 @@ export default function Mobile() {
           </Typography>
         </Box>
       </Box>
-      {/* </Container> */}
+      </Container>
     </Box>
   );
 }

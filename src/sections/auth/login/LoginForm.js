@@ -33,23 +33,34 @@ export default function LoginForm() {
 
   const handleLogin = async () => {
     try {
-      
-      setLoading(true);
-      const { data } = await axios.post(`/api/login`, {
-        email,
+      const hotelInfo = {
+        name: 'Hilton',
         password,
-      });
+        location: {
+          address: '1234 Street',
+          city: 'Addis Ababa',
+          state: 'Addis Ababa',
+          country: 'Ethiopia',
+          postalCode: '1000',
+        },
+        contact: {
+          email,
+          phone: '+2519456789',
+          socialMedia: {
+            facebook: 'https://www.facebook.com/',
+            twitter: 'https://www.twitter.com/',
+            instagram: 'https://www.instagram.com/',
+          },
+        },
+        star: 5,
+      };
+
+      setLoading(true);
+      const { data } = await axios.post(`http://localhost:3001/api/hotels/login`, hotelInfo);
       dispatch(login(data));
       console.table(data);
-
     } catch (error) {
-
       console.log(error);
-      setTimeout(() => {
-        dispatch(login({ email, password }));
-        console.table({ email, password });
-      }, 3000);
-      
     } finally {
       setLoading(false);
     }

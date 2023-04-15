@@ -36,38 +36,51 @@ export default function RegisterForm() {
   }, [user]);
 
   const handleRegister = async () => {
-    
     try {
       setLoading(true);
-      const { data } = await axios.post(`/api/register`, {
-        firstName,
-        lastName,
-        restaurant,
-        email,
+
+      const hotelInfo = {
+        name: restaurant,
         password,
-      });
+        location: {
+          address: '1234 Street',
+          city: 'Addis Ababa',
+          state: 'Addis Ababa',
+          country: 'Ethiopia',
+          postalCode: '1000',
+        },
+        contact: {
+          email,
+          phone: '+2519456789',
+          socialMedia: {
+            facebook: 'https://www.facebook.com/',
+            twitter: 'https://www.twitter.com/',
+            instagram: 'https://www.instagram.com/',
+          },
+        },
+        star: 5,
+      };
+
+      const { data } = await axios.post('http://localhost:3001/api/hotels', hotelInfo);
+
       dispatch(register(data));
       console.table(data);
-
     } catch (error) {
-
       console.log(error);
-      dispatch(register({ firstName, lastName, restaurant, email, password }));
-      console.table({ firstName, lastName, restaurant, email, password });
-
+      // dispatch(register({ firstName, lastName, restaurant, email, password }));
+      // console.table({ firstName, lastName, restaurant, email, password });
     } finally {
       setLoading(false);
     }
-
   };
 
   return (
     <>
       <Stack spacing={3}>
-        <div style={{ display: 'flex', gap: 4 }}>
-          <TextField name="first" label="First Name"onChange={(e) => setFirstName(e.target.value)} />
+        {/* <div style={{ display: 'flex', gap: 4 }}>
+          <TextField name="first" label="First Name" onChange={(e) => setFirstName(e.target.value)} />
           <TextField name="last" label="Last Name" onChange={(e) => setLastName(e.target.value)} />
-        </div>
+        </div> */}
         <TextField name="restaurant" label="Restaurant Name" onChange={(e) => setRestaurant(e.target.value)} />
         <TextField name="email" label="Email address" onChange={(e) => setEmail(e.target.value)} />
 
@@ -111,7 +124,7 @@ export default function RegisterForm() {
             variant="contained"
             onClick={handleRegister}
             loading={loading}
-            disabled={!termsChecked || !firstName || !lastName || !restaurant || !email || !password || loading}
+            disabled={!termsChecked || !restaurant || !email || !password || loading}
           >
             Register
           </LoadingButton>

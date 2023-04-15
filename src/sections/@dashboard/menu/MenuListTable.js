@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
@@ -6,6 +5,7 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 // @mui
 import {
+  Dialog,
   Card,
   Table,
   Stack,
@@ -34,14 +34,16 @@ import { MenuListHead, MenuListToolbar } from '.';
 // mock
 import MENU from '../../../_mock/menuItem';
 import { add, get, remove } from '../../../redux/menuSlice';
+import AddMenuDialog from './AddMenuDialog';
+import EditMenuDialog from './EditMenuDialog';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'price', label: 'Price', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: 'dsc', label: 'Description', alignRight: false },
+  { id: 'availability', label: 'availability', alignRight: false },
+  { id: 'description', label: 'Description', alignRight: false },
   // { id: 'isVerified', label: 'Verified', alignRight: false },
   { id: 'options' },
 ];
@@ -175,18 +177,39 @@ export default function MenuListTable() {
 
   const isNotFound = !filteredList.length && !!filterName;
 
+  const [openAddMenu, setOpenAddMenu] = useState(false);
+
+  const handleOpenAddMenu = () => {
+    setOpenAddMenu(true);
+  };
+
+  const handleCloseAddMenu = () => {
+    setOpenAddMenu(false);
+  };
+
+  const handleAddMenu = (menu) => {
+    dispatch(add(menu));
+    handleCloseAddMenu();
+  };
+
+  const [openEditMenu, setOpenEditMenu] = useState(false);
+
+  const handleOpenEditMenu = () => {
+    setOpenEditMenu(true);
+  };
+
+  const handleCloseEditMenu = () => {
+    setOpenEditMenu(false);
+  };
+
   return (
     <>
-      <Helmet>
-        <title> Menu | Minimal UI </title>
-      </Helmet>
-
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             Menu Items
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenAddMenu}>
             Add Menu
           </Button>
         </Stack>
@@ -208,7 +231,7 @@ export default function MenuListTable() {
                 />
                 <TableBody>
                   {filteredList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, price, img, dsc, status = 'unavailable' } = row;
+                    const { id, name, price, image, description, availability = 'unavailable' } = row;
                     const selectedList = selected.indexOf(id) !== -1;
 
                     return (
@@ -219,7 +242,7 @@ export default function MenuListTable() {
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={img} />
+                            <Avatar alt={name} src={image} />
                             <Typography variant="subtitle2" noWrap>
                               {name}
                             </Typography>
@@ -231,12 +254,12 @@ export default function MenuListTable() {
                         </TableCell>
 
                         <TableCell align="left">
-                          <Label color={status === 'available' ? 'success' : 'error'}>
-                            {sentenceCase(status || 'low')}
+                          <Label color={availability === 'available' ? 'success' : 'error'}>
+                            {sentenceCase(availability || 'low')}
                           </Label>
                         </TableCell>
 
-                        <TableCell align="left">{dsc}</TableCell>
+                        <TableCell align="left">{description}</TableCell>
 
                         <TableCell align="right">
                           <IconButton size="large" color="inherit" onClick={(event) => handleOpenMenu(event, id)}>
@@ -320,6 +343,9 @@ export default function MenuListTable() {
           Delete
         </MenuItem>
       </Popover>
+      
+      <AddMenuDialog open={openAddMenu} onClose={handleCloseAddMenu} onAdd={handleAddMenu} />
+      {/* <EditMenuDialog open={openEditMenu} onClose={handleCloseEditMenu} onEdit={handleEditMenu} /> */}
     </>
   );
 }
