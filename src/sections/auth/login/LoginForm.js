@@ -33,34 +33,29 @@ export default function LoginForm() {
 
   const handleLogin = async () => {
     try {
-      const hotelInfo = {
-        name: 'Hilton',
+      const info = {
+        email,
         password,
-        location: {
-          address: '1234 Street',
-          city: 'Addis Ababa',
-          state: 'Addis Ababa',
-          country: 'Ethiopia',
-          postalCode: '1000',
-        },
-        contact: {
-          email,
-          phone: '+2519456789',
-          socialMedia: {
-            facebook: 'https://www.facebook.com/',
-            twitter: 'https://www.twitter.com/',
-            instagram: 'https://www.instagram.com/',
-          },
-        },
-        star: 5,
+        role: 'Hotel',
       };
 
       setLoading(true);
-      const { data } = await axios.post(`http://localhost:3001/api/hotels/login`, hotelInfo);
-      dispatch(login(data));
-      console.table(data);
+      const { data } = await axios.post(`http://localhost:3001/api/auth`, info);
+
+      const user = await axios.get('http://localhost:3001/api/me', {
+        headers: {
+          ContentType: 'application/json',
+          Authorization: `Bearer ${data}`,
+          'x-auth-token': `${data}`,
+        },
+      });
+
+      dispatch(login({...user.data, token: data}));
+
+      navigate('/dashboard', { replace: true });
+      
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
     } finally {
       setLoading(false);
     }
