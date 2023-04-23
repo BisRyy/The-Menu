@@ -14,11 +14,11 @@ import { register } from '../../../redux/authSlice';
 export default function RegisterForm() {
   const navigate = useNavigate();
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [restaurant, setRestaurant] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const [showPassword, setShowPassword] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
@@ -36,11 +36,16 @@ export default function RegisterForm() {
   }, [user]);
 
   const handleRegister = async () => {
+
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
     try {
       setLoading(true);
 
       const hotelInfo = {
-        name: restaurant,
+        name,
         password,
         location: {
           address: '1234 Street',
@@ -51,24 +56,32 @@ export default function RegisterForm() {
         },
         contact: {
           email,
-          phone: '+2519456789',
+          phone,
           socialMedia: {
             facebook: 'https://www.facebook.com/',
             twitter: 'https://www.twitter.com/',
             instagram: 'https://www.instagram.com/',
           },
         },
+        images: [],
+        profileImage: 'hotel.jpeg',
         star: 5,
       };
 
       const { data } = await axios.post('http://localhost:3001/api/hotels', hotelInfo);
 
-      dispatch(register(data));
-      console.table(data);
+      const user = await axios.get('http://localhost:3001/api/me', {
+        headers: {
+          ContentType: 'application/json',
+          Authorization: `Bearer ${data}`,
+          'x-auth-token': `${data}`,
+        },
+      });
+
+      dispatch(register({ ...user.data, token: data }));
+
     } catch (error) {
-      console.log(error);
-      // dispatch(register({ firstName, lastName, restaurant, email, password }));
-      // console.table({ firstName, lastName, restaurant, email, password });
+      console.log(error.response.data);
     } finally {
       setLoading(false);
     }
@@ -77,12 +90,9 @@ export default function RegisterForm() {
   return (
     <>
       <Stack spacing={3}>
-        {/* <div style={{ display: 'flex', gap: 4 }}>
-          <TextField name="first" label="First Name" onChange={(e) => setFirstName(e.target.value)} />
-          <TextField name="last" label="Last Name" onChange={(e) => setLastName(e.target.value)} />
-        </div> */}
-        <TextField name="restaurant" label="Restaurant Name" onChange={(e) => setRestaurant(e.target.value)} />
-        <TextField name="email" label="Email address" onChange={(e) => setEmail(e.target.value)} />
+        <TextField name="name" type='text' label="Restaurant Name" onChange={(e) => setName(e.target.value)} />
+        <TextField name="email" type='email' label="Email address" onChange={(e) => setEmail(e.target.value)} />
+        <TextField name="phone" type="number" label="Phone Number" onChange={(e) => setPhone(e.target.value)} />
 
         <TextField
           name="password"
@@ -100,6 +110,15 @@ export default function RegisterForm() {
             ),
           }}
         />
+
+        <TextField
+          name="confirmPassword"
+          label="Confirm Password"
+          type={showPassword ? 'text' : 'password'}
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+
         <Box>
           <Box
             sx={{
@@ -124,7 +143,7 @@ export default function RegisterForm() {
             variant="contained"
             onClick={handleRegister}
             loading={loading}
-            disabled={!termsChecked || !restaurant || !email || !password || loading}
+            disabled={!termsChecked || !name || !phone || !email || !password || loading}
           >
             Register
           </LoadingButton>
