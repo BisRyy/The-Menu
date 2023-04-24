@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
 // mock
-import account from '../../../_mock/account';
+import account from '../../../data/account';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 // components
@@ -37,15 +37,15 @@ Nav.propTypes = {
 };
 
 export default function Nav({ openNav, onCloseNav }) {
+
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  
+
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/login', { replace: true })
+    navigate('/login', { replace: true });
   };
-   
 
   const isDesktop = useResponsive('up', 'lg');
 
@@ -94,12 +94,12 @@ export default function Nav({ openNav, onCloseNav }) {
           <Box
             component="img"
             src="/assets/images/avatars/avatar_default.jpg"
-            sx={{ width: 100, position: 'absolute', top: -50, borderRadius:"50%" }}
+            sx={{ width: 100, position: 'absolute', top: -50, borderRadius: '50%' }}
           />
 
           <Box sx={{ textAlign: 'center' }}>
             <Typography gutterBottom variant="h6">
-              Bisrat Kebere
+              {account.displayName}
             </Typography>
 
             {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>

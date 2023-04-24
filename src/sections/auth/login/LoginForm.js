@@ -8,6 +8,7 @@ import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
 import { login } from '../../../redux/authSlice';
+import account from '../../../data/account';
 
 // ----------------------------------------------------------------------
 
@@ -49,6 +50,11 @@ export default function LoginForm() {
           'x-auth-token': `${data}`,
         },
       });
+
+      account.displayName = user.data.name;
+      account.email = user.data.contact.email;
+      account.photoURL = user.data.images[0] || '/assets/images/avatars/avatar_default.jpg';
+      
 
       dispatch(login({...user.data, token: data}));
 
