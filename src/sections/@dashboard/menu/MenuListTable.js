@@ -5,7 +5,6 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 // @mui
 import {
-  Dialog,
   Card,
   Table,
   Stack,
@@ -23,6 +22,7 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
+  Link,
 } from '@mui/material';
 // components
 import Label from '../../../components/label';
@@ -32,17 +32,18 @@ import Scrollbar from '../../../components/scrollbar';
 import { MenuListHead, MenuListToolbar } from '.';
 
 // mock
-import MENU from '../../../_mock/menuItem';
-import { add, get, remove } from '../../../redux/menuSlice';
+import MENU from '../../../data/menuItem';
+import { add, get, remove, update } from '../../../redux/menuSlice';
 import AddMenuDialog from './AddMenuDialog';
 import EditMenuDialog from './EditMenuDialog';
+import MenuDetails from '../menus/MenuDetails';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'price', label: 'Price', alignRight: false },
-  { id: 'availability', label: 'availability', alignRight: false },
+  { id: 'availability', label: 'Availability', alignRight: false },
   { id: 'description', label: 'Description', alignRight: false },
   // { id: 'isVerified', label: 'Verified', alignRight: false },
   { id: 'options' },
@@ -84,14 +85,15 @@ export default function MenuListTable() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // axios.get('http://localhost:3200/bbqs').then((res) => {
-    //   dispatch(get(res.data));
-    // });
-    dispatch(get(MENU));
+    const hotelId = JSON.parse(localStorage.getItem('user'))._id;
+    axios.get(`http://localhost:3001/api/menus/hotel/${hotelId}`).then((res) => {
+      console.log('res', res.data);
+      dispatch(get(res.data));
+    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  
+  }, [MENULIST]);
+  // dispatch(get(MENU));
 
   const [open, setOpen] = useState([null, null]);
 
@@ -107,22 +109,30 @@ export default function MenuListTable() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleOpenMenu = (event, id) => {
-    setOpen([event.currentTarget, id]);
+  const handleOpenMenu = (event, _id) => {
+    console.log(_id);
+    setOpen([event.currentTarget, _id]);
   };
 
   const handleCloseMenu = () => {
     setOpen([null, null]);
   };
 
-  const handleDelete = () => {
-    dispatch(remove(open[1]));
-    handleCloseMenu();
-  };
-
   const handleDeleteSelected = () => {
-    selected.forEach((id) => {
-      dispatch(remove(id));
+    selected.forEach((_id) => {
+      axios
+        .delete(`http://localhost:3001/api/menus/${_id}`, {
+          headers: {
+            'x-auth-token': JSON.parse(localStorage.getItem('user')).token,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          dispatch(remove(_id));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       setSelected([]);
     });
   };
@@ -135,7 +145,7 @@ export default function MenuListTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = MENULIST.map((n) => n.id);
+      const newSelecteds = MENULIST.map((n) => n._id);
       setSelected(newSelecteds);
       return;
     }
@@ -187,21 +197,131 @@ export default function MenuListTable() {
     setOpenAddMenu(false);
   };
 
-  const handleAddMenu = (menu) => {
-    dispatch(add(menu));
+  const handleAddMenu = async (menu) => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = user.token;
+    console.log('menu', menu);
+    console.log('user', user);
+    console.log('token', token);
+
+    const formData = axios.toFormData(menu);
+    console.log('formData', formData);
+
+    const response = await axios({
+      method: 'post',
+      url: 'http://localhost:3001/api/menus',
+      data: formData,
+      files: menu.images,
+      headers: {
+        'Content-Type': `multipart/form-data boundary=${formData._boundary}`,
+        'x-auth-token': token,
+      },
+    })
+      .then((res) => {
+        console.log('res', res);
+      })
+      .catch((err) => {
+        console.log('err', err);
+      });
+
+    console.log('response', response);
+    // axios
+    //   .post('http://localhost:3001/api/menus', formData, {
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data',
+    //       'x-auth-token': token,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //     dispatch(add(res.data));
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+
+    // axios.post(`http://localhost:3001/api/menus/${menu._id}/images`, formData, {
+    //   headers: {
+    //     'Content-Type': 'multipart/form-data',
+    //     'x-auth-token': token,
+    //   },
+    // }).then((res) => {
+    //   console.log(res);
+    // }).catch((err) => {
+    //   console.log(err);
+    // });
+
     handleCloseAddMenu();
   };
 
-  const [openEditMenu, setOpenEditMenu] = useState(false);
+  // axios.interceptors.request.use(
+  //   (config) => {
+  //     const token = JSON.parse(localStorage.getItem('user')).token;
+  //     config.headers['x-auth-token'] = token;
+  //     return config;
+  //   }
+  // );
+
+  const [openEditMenu, setOpenEditMenu] = useState([false, null]);
 
   const handleOpenEditMenu = () => {
-    setOpenEditMenu(true);
+    console.log('open Edit', open);
+    setOpenEditMenu([true, openEditMenu[1]]);
   };
 
   const handleCloseEditMenu = () => {
     setOpenEditMenu(false);
+    handleCloseMenu();
   };
 
+  const handleEditMenu = async (menu, id) => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = user.token;
+    console.log('menu', menu);
+    console.log('user', user);
+    console.log('token', token);
+
+    const formData = axios.toFormData(menu);
+    console.log('formData', formData);
+
+    const response = await axios
+      .put(`http://localhost:3001/api/menus/${id}`, menu, {
+        headers: {
+          // 'Content-Type': `multipart/form-data boundary=${formData._boundary}`,
+          'x-auth-token': token,
+        },
+      })
+      .then((res) => {
+        console.log('res', res);
+      })
+      .catch((err) => {
+        console.log('err', err);
+      });
+
+    console.log('response', response);
+
+    handleCloseEditMenu();
+  };
+
+  const handleDelete = () => {
+    console.log('open', open);
+    axios
+      .delete(`http://localhost:3001/api/menus/${open[1]}`, {
+        headers: {
+          'x-auth-token': JSON.parse(localStorage.getItem('user')).token,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        dispatch(remove(res.data._id));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    handleCloseMenu();
+  };
+
+  const [openDetailMenu, setOpenDetailMenu] = useState(false);
   return (
     <>
       <Container>
@@ -215,7 +335,12 @@ export default function MenuListTable() {
         </Stack>
 
         <Card>
-          <MenuListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} handleDeleteSelected={handleDeleteSelected}/>
+          <MenuListToolbar
+            numSelected={selected.length}
+            filterName={filterName}
+            onFilterName={handleFilterByName}
+            handleDeleteSelected={handleDeleteSelected}
+          />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -231,21 +356,35 @@ export default function MenuListTable() {
                 />
                 <TableBody>
                   {filteredList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, price, image, description, availability = 'unavailable' } = row;
-                    const selectedList = selected.indexOf(id) !== -1;
+                    const { _id, name, price, image, description, availability = 'unavailable' } = row;
+                    const selectedList = selected.indexOf(_id) !== -1;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedList}>
+                      <TableRow hover key={_id} tabIndex={-1} role="checkbox" selected={selectedList}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedList} onChange={(event) => handleClick(event, id)} />
+                          <Checkbox checked={selectedList} onChange={(event) => handleClick(event, _id)} />
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={image} />
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
+                            <Avatar alt={name} src={image || '/assets/images/covers/cover_3.jpg'} />
+                            <Link
+                              color="inherit"
+                              underline="hover"
+                              component="div"
+                              onClick={() => setOpenDetailMenu([!openDetailMenu[0], row])}
+                              sx={{
+                                '&:hover': {
+                                  textDecoration: 'underline',
+                                  color: 'text.primary',
+                                  cursor: 'pointer',
+                                },
+                              }}
+                            >
+                              <Typography variant="subtitle2" noWrap>
+                                {name}
+                              </Typography>
+                            </Link>
                           </Stack>
                         </TableCell>
 
@@ -262,7 +401,14 @@ export default function MenuListTable() {
                         <TableCell align="left">{description}</TableCell>
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(event) => handleOpenMenu(event, id)}>
+                          <IconButton
+                            size="large"
+                            color="inherit"
+                            onClick={(event) => {
+                              setOpenEditMenu([openEditMenu[0], row]);
+                              handleOpenMenu(event, _id);
+                            }}
+                          >
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
@@ -333,19 +479,28 @@ export default function MenuListTable() {
           },
         }}
       >
-        <MenuItem onClick={() => console.log('edit', open[1])}>
+        <MenuItem onClick={handleOpenEditMenu}>
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
           Edit
         </MenuItem>
 
-        <MenuItem sx={{ color: 'error.main' }} onClick={handleDelete} >
+        <MenuItem sx={{ color: 'error.main' }} onClick={handleDelete}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Delete
         </MenuItem>
       </Popover>
-      
+
       <AddMenuDialog open={openAddMenu} onClose={handleCloseAddMenu} onAdd={handleAddMenu} />
-      {/* <EditMenuDialog open={openEditMenu} onClose={handleCloseEditMenu} onEdit={handleEditMenu} /> */}
+
+      {openEditMenu[0] && (
+        <EditMenuDialog
+          data={openEditMenu[1]}
+          open={openEditMenu[0]}
+          onClose={handleCloseEditMenu}
+          onEdit={handleEditMenu}
+        />
+      )}
+      {openDetailMenu && <MenuDetails menu={openDetailMenu[1]} open={openDetailMenu[0]} setOpen={setOpenDetailMenu} />}
     </>
   );
 }
