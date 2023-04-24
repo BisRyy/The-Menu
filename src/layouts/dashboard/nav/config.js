@@ -1,4 +1,5 @@
 // component
+import Iconify from '../../../components/iconify/Iconify';
 import SvgColor from '../../../components/svg-color';
 
 // ----------------------------------------------------------------------
@@ -7,52 +8,42 @@ const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ 
 
 const navConfig = [
   {
-    title: 'menu list',
-    path: '/dashboard/menu',
-    icon: icon('ic_analytics'),
-  },
-  {
-    title: 'grid menu',
-    path: '/dashboard/menus',
-    icon: icon('ic_cart'),
-  },
-  {
     title: 'dashboard',
     path: '/dashboard/app',
     icon: icon('ic_analytics'),
     info: 'new',
     color: 'blue',
   },
-  // {
-  //   title: 'user',
-  //   path: '/dashboard/user',
-  //   icon: icon('ic_user'),
-  // },
-  // {
-  //   title: 'product',
-  //   path: '/dashboard/products',
-  //   icon: icon('ic_cart'),
-  // },
-  // {
-  //   title: 'blog',
-  //   path: '/dashboard/blog',
-  //   icon: icon('ic_blog'),
-  // },
   {
-    title: 'login',
-    path: '/login',
-    icon: icon('ic_lock'),
+    title: 'menu list',
+    path: '/dashboard/menu',
+    icon: <Iconify icon="ic:baseline-menu-book" />,
   },
   {
-    title: 'register',
-    path: '/register',
-    icon: icon('ic_lock'),
+    title: 'menu view',
+    path: '/dashboard/menus',
+    icon: <Iconify icon="eva:grid-outline" />,
   },
   {
-    title: 'Not found',
-    path: '/404',
-    icon: icon('ic_disabled'),
+    title: 'Staff',
+    path: '/dashboard/user',
+    icon: icon('ic_user'),
   },
+  // {
+  //   title: 'login',
+  //   path: '/login',
+  //   icon: icon('ic_lock'),
+  // },
+  // {
+  //   title: 'register',
+  //   path: '/register',
+  //   icon: icon('ic_lock'),
+  // },
+  // {
+  //   title: 'Not found',
+  //   path: '/404',
+  //   icon: icon('ic_disabled'),
+  // },
 ];
 
 export default navConfig;
