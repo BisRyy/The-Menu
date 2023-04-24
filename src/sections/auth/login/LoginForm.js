@@ -41,9 +41,9 @@ export default function LoginForm() {
       };
 
       setLoading(true);
-      const { data } = await axios.post(`http://localhost:3001/api/auth`, info);
+      const { data } = await axios.post(`/api/auth`, info);
 
-      const user = await axios.get('http://localhost:3001/api/me', {
+      const user = await axios.get('/api/me', {
         headers: {
           ContentType: 'application/json',
           Authorization: `Bearer ${data}`,
@@ -54,12 +54,10 @@ export default function LoginForm() {
       account.displayName = user.data.name;
       account.email = user.data.contact.email;
       account.photoURL = user.data.images[0] || '/assets/images/avatars/avatar_default.jpg';
-      
 
-      dispatch(login({...user.data, token: data}));
+      dispatch(login({ ...user.data, token: data }));
 
       navigate('/dashboard', { replace: true });
-      
     } catch (error) {
       console.log(error.response.data);
     } finally {

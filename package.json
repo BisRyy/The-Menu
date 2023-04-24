@@ -4,7 +4,7 @@
   "licence": "MIT",
   "version": "1.0.0",
   "private": false,
-  "proxy": "http://localhost:3001",
+  "proxy": "https://menuserver.onrender.com",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

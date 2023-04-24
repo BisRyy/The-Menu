@@ -36,7 +36,6 @@ export default function RegisterForm() {
   }, [user]);
 
   const handleRegister = async () => {
-
     if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
@@ -68,9 +67,9 @@ export default function RegisterForm() {
         star: 5,
       };
 
-      const { data } = await axios.post('http://localhost:3001/api/hotels', hotelInfo);
+      const { data } = await axios.post('/api/hotels', hotelInfo);
 
-      const user = await axios.get('http://localhost:3001/api/me', {
+      const user = await axios.get('/api/me', {
         headers: {
           ContentType: 'application/json',
           Authorization: `Bearer ${data}`,
@@ -79,7 +78,6 @@ export default function RegisterForm() {
       });
 
       dispatch(register({ ...user.data, token: data }));
-
     } catch (error) {
       console.log(error.response.data);
     } finally {
@@ -90,8 +88,8 @@ export default function RegisterForm() {
   return (
     <>
       <Stack spacing={3}>
-        <TextField name="name" type='text' label="Restaurant Name" onChange={(e) => setName(e.target.value)} />
-        <TextField name="email" type='email' label="Email address" onChange={(e) => setEmail(e.target.value)} />
+        <TextField name="name" type="text" label="Restaurant Name" onChange={(e) => setName(e.target.value)} />
+        <TextField name="email" type="email" label="Email address" onChange={(e) => setEmail(e.target.value)} />
         <TextField name="phone" type="number" label="Phone Number" onChange={(e) => setPhone(e.target.value)} />
 
         <TextField
