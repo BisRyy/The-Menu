@@ -14,6 +14,14 @@ import ScrollToTop from './components/scroll-to-top';
 // ----------------------------------------------------------------------
 
 export default function App() {
+  // const mode = useSelector((state) => state.auth.mode);
+
+  // const darkTheme = createTheme({
+  //   palette: {
+  //     mode: mode,
+  //   },
+  // });
+
   return (
     <HelmetProvider>
       <BrowserRouter>

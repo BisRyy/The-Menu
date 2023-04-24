@@ -3,17 +3,16 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
 //
-import BlogPage from './pages/BlogPage';
 import UserPage from './pages/UserPage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
-import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import MenuPage from './pages/MenuPage';
-import ProductsListPage from './pages/ProductsListPage';
+import MenuView from './pages/MenuView';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import Test from './pages/Test';
+import Menu from './pages/Menu';
 
 // ----------------------------------------------------------------------
 
@@ -25,11 +24,9 @@ export default function Router() {
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'menu', element: <MenuPage /> },
-        { path: 'menus', element: <ProductsListPage /> },
+        { path: 'menus', element: <MenuView /> },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'blog', element: <BlogPage /> },
       ],
     },
     {
@@ -37,6 +34,7 @@ export default function Router() {
       element: <LoginPage />,
     },
     { path: 'home', element: <HomePage /> },
+    { path: 'menu', element: <Menu /> },
     {
       element: <SimpleLayout />,
       children: [

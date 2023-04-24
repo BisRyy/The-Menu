@@ -2,49 +2,48 @@ import { Box, Button, Container, Typography } from '@mui/material';
 
 export default function Mobile() {
   return (
-    <Box sx={{ backgroundColor: '#E6F0FF', minHeight: '80vh', p: 3 }}>
-      <Container>
+    <Box sx={{ minHeight: '80vh'}}>
+      {/* <Container> */}
       <Box
         sx={{
-          display: {md:"flex", sm:"none"},
+          display: "flex",
           justifyContent: 'center',
           gap: 5,
           flexDirection: 'column-reverse',
           alignItems: 'center',
           textAlign: 'center',
+          overflow: 'hidden',
         }}
       >
-        <Box sx={{ flex: '1' }}>
+        <Box sx={{ flex: '1', display:'flex',flexDirection:'column', alignItems:'center' }}>
           <Typography
             variant="body2"
             sx={{
               fontSize: '18px',
-              color: '#687690',
+              // color: '#687690',
               fontWeight: '500',
               // mt: { md: 6, sm: 0 },
               mb: 4,
             }}
           >
-            Welcome to the Digital World
+            Ease of use, simplicity, and efficiency are the key features of our Digital Menu System.
           </Typography>
           <Typography
             variant="h1"
             sx={{
               fontSize: '64px',
               transform: 'rotate(-6deg)',
-              color: '#000336',
+              // color: '#000336',
               fontWeight: 'bold',
               margin: 'auto',
               fontFamily: 'Cormorant Upright, serif',
               maxWidth: '900px',
             }}
           >
-            Manage your Restaurants Menu from your fingertips.
+            Focus on your business, we will take care of your customers.
           </Typography>
-          <Typography variant="body2" sx={{ fontSize: '18px', color: '#5A6473', my: 4, maxWidth: '1200px' }}>
-            lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat.
+          <Typography variant="body2" sx={{ fontSize: '18px', color: '#5A6473', my: 4, maxWidth: '700px' }}>
+            Waiters can easily take orders from customers and send them to the kitchen. 
           </Typography>
           <Button variant="contained" size="large">
             More About Us
@@ -54,14 +53,14 @@ export default function Mobile() {
         <Box
           sx={{
             display: 'flex',
-            flexDirection: { xl: 'row', xs: 'column' },
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             gap: 2,
           }}
         >
           <Typography variant="h3" fontFamily="Cormorant Upright, serif" flex={1}  width={"500px"} >
-            lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            By just scanning the QR code, your customers can easily choose and  order their meal from their mobile phones.
           </Typography>
           <Box
             sx={{
@@ -81,12 +80,12 @@ export default function Mobile() {
             />
             <img src="/assets/mobile.png" alt="heroImg" style={{ maxHeight: 500, marginBottom: '2rem' }} />
           </Box>
-          <Typography variant="h3" fontFamily="Cormorant Upright, serif" flex={1} width={"500px"} >
-            lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+          <Typography variant="h3" fontFamily="Cormorant Upright, serif" flex={1} maxWidth={"500px"} >
+            Accept orders and payments from your customers with our Digital Menu System without any hassle.
           </Typography>
         </Box>
       </Box>
-      </Container>
+      {/* </Container> */}
     </Box>
   );
 }

@@ -47,7 +47,7 @@ export default function RegisterPage() {
   return (
     <>
       <Helmet>
-        <title> Register | Minimal UI </title>
+        <title> Register | MenuHub  </title>
       </Helmet>
 
       <StyledRoot>
