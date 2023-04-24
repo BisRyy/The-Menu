@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
@@ -11,6 +13,8 @@ import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';
 import LanguagePopover from './LanguagePopover';
 import NotificationsPopover from './NotificationsPopover';
+import DarkMode from './darkMode';
+import { changeMode } from '../../../redux/authSlice';
 
 // ----------------------------------------------------------------------
 
@@ -42,7 +46,23 @@ Header.propTypes = {
   onOpenNav: PropTypes.func,
 };
 
+
 export default function Header({ onOpenNav }) {
+  const dispatch = useDispatch();
+
+  const [mode, setMode] = useState('light');
+  
+  useEffect(() => {
+    dispatch(changeMode(mode));
+  }, [mode]);
+  // const mode = useSelector((state) => state.auth.mode);
+
+  
+  const setDarkMode = () => {
+    const newmode = mode === 'light' ? 'dark' : 'light';
+    setMode(newmode);
+    // dispatch(changeMode(newmode));
+  }
   return (
     <StyledRoot>
       <StyledToolbar>
@@ -68,7 +88,8 @@ export default function Header({ onOpenNav }) {
             sm: 1,
           }}
         >
-          <LanguagePopover />
+          <DarkMode darkMode={mode} setDarkMode={setDarkMode}  />
+          {/* <LanguagePopover /> */}
           <NotificationsPopover />
           <AccountPopover />
         </Stack>
