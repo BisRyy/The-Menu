@@ -86,7 +86,7 @@ export default function MenuListTable() {
 
   useEffect(() => {
     const hotelId = JSON.parse(localStorage.getItem('user'))._id;
-    axios.get(`/api/menus/hotel/${hotelId}`).then((res) => {
+    axios.get(`https://menuserver.onrender.com/api/menus/hotel/${hotelId}`).then((res) => {
       console.log('res', res.data);
       dispatch(get(res.data));
     });
@@ -121,7 +121,7 @@ export default function MenuListTable() {
   const handleDeleteSelected = () => {
     selected.forEach((_id) => {
       axios
-        .delete(`/api/menus/${_id}`, {
+        .delete(`https://menuserver.onrender.com/api/menus/${_id}`, {
           headers: {
             'x-auth-token': JSON.parse(localStorage.getItem('user')).token,
           },
@@ -209,7 +209,7 @@ export default function MenuListTable() {
 
     const response = await axios({
       method: 'post',
-      url: '/api/menus',
+      url: 'https://menuserver.onrender.com/api/menus',
       data: formData,
       files: menu.images,
       headers: {
@@ -226,7 +226,7 @@ export default function MenuListTable() {
 
     console.log('response', response);
     // axios
-    //   .post('/api/menus', formData, {
+    //   .post('https://menuserver.onrender.com/api/menus', formData, {
     //     headers: {
     //       'Content-Type': 'multipart/form-data',
     //       'x-auth-token': token,
@@ -240,7 +240,7 @@ export default function MenuListTable() {
     //     console.log(err);
     //   });
 
-    // axios.post(`/api/menus/${menu._id}/images`, formData, {
+    // axios.post(`https://menuserver.onrender.com/api/menus/${menu._id}/images`, formData, {
     //   headers: {
     //     'Content-Type': 'multipart/form-data',
     //     'x-auth-token': token,
@@ -285,7 +285,7 @@ export default function MenuListTable() {
     console.log('formData', formData);
 
     const response = await axios
-      .put(`/api/menus/${id}`, menu, {
+      .put(`https://menuserver.onrender.com/api/menus/${id}`, menu, {
         headers: {
           // 'Content-Type': `multipart/form-data boundary=${formData._boundary}`,
           'x-auth-token': token,
@@ -306,7 +306,7 @@ export default function MenuListTable() {
   const handleDelete = () => {
     console.log('open', open);
     axios
-      .delete(`/api/menus/${open[1]}`, {
+      .delete(`https://menuserver.onrender.com/api/menus/${open[1]}`, {
         headers: {
           'x-auth-token': JSON.parse(localStorage.getItem('user')).token,
         },
