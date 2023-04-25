@@ -1,6 +1,7 @@
-import { styled, Typography } from '@mui/material';
+import { Link, styled, Typography } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import React from 'react';
+import Iconify from '../../components/iconify/Iconify';
 
 // import fbIcon from '../media/fbicon.png';
 // import twitterIcon from '../media/twittericon.png';
@@ -49,14 +50,14 @@ const Footer = () => {
                 mb: 2,
               }}
             >
-              Products
+              Services
             </Typography>
 
-            <FooterLink>Listing</FooterLink>
+            <FooterLink>Hotels</FooterLink>
             <br />
-            <FooterLink>Properties</FooterLink>
+            <FooterLink>Menus</FooterLink>
             <br />
-            <FooterLink>Agents</FooterLink>
+            <FooterLink>Restaurants</FooterLink>
             <br />
             <FooterLink>Blog</FooterLink>
           </Box>
@@ -70,16 +71,16 @@ const Footer = () => {
                 mb: 2,
               }}
             >
-              Resources
+              Important Links
             </Typography>
 
-            <FooterLink>Our Homes</FooterLink>
+            <FooterLink>Log in</FooterLink>
             <br />
-            <FooterLink>Stories</FooterLink>
+            <FooterLink>Register</FooterLink>
             <br />
-            <FooterLink>Video</FooterLink>
+            <FooterLink>Pricing</FooterLink>
             <br />
-            <FooterLink>Free Trial</FooterLink>
+            <FooterLink>About Us</FooterLink>
           </Box>
 
           <Box>
@@ -123,17 +124,35 @@ const Footer = () => {
                 mb: 2,
               }}
             >
-              You’ll find your next home, in any style you prefer.
+              Your Digital Menu is waiting just a click away.
             </Typography>
 
             <IconBox>
-              {/* <img src="/assets/images/covers/cover_21.jpg" alt="fbIcon" style={{ cursor: 'pointer' }} />
-              <img src="/assets/images/covers/cover_21.jpg" alt="twitterIcon" style={{ cursor: 'pointer' }} />
-              <img src="/assets/images/covers/cover_21.jpg" alt="linkedinIcon" style={{ cursor: 'pointer' }} /> */}
+              <Iconify icon={'mdi:github'} />
+              <Iconify icon={'mdi:telegram'} />
+              <Iconify icon={'mdi:facebook'} />
+              <Iconify icon={'mdi:twitter'} />
+              <Iconify icon={'mdi:linkedin'} />
             </IconBox>
           </Box>
         </CustomContainer>
       </CustomContainer>
+      <Typography sx={{ textAlign: 'center', mt: 5 }}>
+        Made with ❤️ by{' '}
+        <FooterLink>
+          <Link href="https://bisrat.tech" target="_blank" rel="noopener">
+            Bisrat Kebere
+          </Link>
+        </FooterLink>{' '}
+        and{' '}
+        <FooterLink>
+          <Link href="https://github.com/duressa-feyissa" target="_blank" rel="noopener">
+            Duressa Feyissa
+          </Link>
+        </FooterLink>
+        <br />
+        © 2023 All rights reserved.
+      </Typography>
     </Box>
   );
 };

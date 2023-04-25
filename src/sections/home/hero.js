@@ -36,7 +36,7 @@ export default function Hero() {
                 variant="body2"
                 sx={{
                   fontSize: '18px',
-                  color: '#687690',
+                  // color: '#687690',
                   fontWeight: '500',
                   mt: { md: 6, sm: 0 },
                   mb: 4,
@@ -47,10 +47,10 @@ export default function Hero() {
               <Title variant="h1" >
                 Manage your Restaurants Menu from your fingertips.
               </Title>
-              <Typography variant="body2" sx={{ fontSize: '18px', color: '#5A6473', my: 4 }}>
+              <Typography variant="body2" sx={{ fontSize: '18px', my: 4 }}>
                 Get a Digital Menu for your Restaurant and let your customers order from their mobile phones.
               </Typography>
-              <Button variant="contained" size="large">
+              <Button variant="contained" size="large" href='/register'>
                 Get Started
               </Button>
             </Box>

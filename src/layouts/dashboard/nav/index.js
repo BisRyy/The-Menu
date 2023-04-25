@@ -37,7 +37,6 @@ Nav.propTypes = {
 };
 
 export default function Nav({ openNav, onCloseNav }) {
-
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -110,6 +109,17 @@ export default function Nav({ openNav, onCloseNav }) {
           <Button onClick={handleLogout} variant="contained">
             Log out
           </Button>
+          <Typography sx={{ textAlign: 'center', mt: 5 }}>
+            Made with ❤️<br /> by{' '}
+            <Link href="https://bisrat.tech" target="_blank" rel="noopener">
+              Bisrat Kebere
+            </Link>{' '}
+            <br /> and{' '}
+            <Link href="https://github.com/duressa-feyissa" target="_blank" rel="noopener">
+              Duressa Feyissa
+            </Link>
+            <br />© 2023 All rights reserved.
+          </Typography>
         </Stack>
       </Box>
     </Scrollbar>
