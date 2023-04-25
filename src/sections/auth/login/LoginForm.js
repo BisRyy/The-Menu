@@ -41,9 +41,9 @@ export default function LoginForm() {
       };
 
       setLoading(true);
-      const { data } = await axios.post(`http://localhost:3001/api/auth`, info);
+      const { data } = await axios.post(`https://menuserver.onrender.com/api/auth`, info);
 
-      const user = await axios.get('http://localhost:3001/api/me', {
+      const user = await axios.get('https://menuserver.onrender.com/api/me', {
         headers: {
           ContentType: 'application/json',
           Authorization: `Bearer ${data}`,

@@ -22,7 +22,7 @@ export default function ProductsPage() {
   useEffect(() => {
     const hotelId = JSON.parse(localStorage.getItem('user'))._id;
     axios
-      .get(`http://localhost:3001/api/menus/hotel/${hotelId}?sortBy=${sortBy}&sortOrder=${sortOrder}`)
+      .get(`https://menuserver.onrender.com/api/menus/hotel/${hotelId}?sortBy=${sortBy}&sortOrder=${sortOrder}`)
       .then((res) => {
         console.log('res', res.data);
         dispatch(get(res.data));
