@@ -2,6 +2,7 @@ import Hero from '../sections/home/hero';
 import Footer from '../sections/home/footer';
 import Mobile from '../sections/home/mobile';
 import NavBar from '../sections/home/header';
+import Hotels from './Hotels'
 
 export default function HomePage() {
   return (
@@ -12,6 +13,7 @@ export default function HomePage() {
       <br />
       <Hero />
       <Mobile />
+      <Hotels />
       <Footer />
     </>
   );

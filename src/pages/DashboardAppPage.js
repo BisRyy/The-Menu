@@ -63,12 +63,12 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} md={6} lg={4}>
             <AppCurrentVisits
-              title="Current Visits"
+              title="Todays Orders"
               chartData={[
-                { label: 'America', value: 4344 },
-                { label: 'Asia', value: 5435 },
-                { label: 'Europe', value: 1443 },
-                { label: 'Africa', value: 4443 },
+                { label: 'Breakfast', value: 4344 },
+                { label: 'Lunch', value: 5435 },
+                { label: 'Dinner', value: 1443 },
+                { label: 'Beverage', value: 4443 },
               ]}
               chartColors={[
                 theme.palette.primary.main,
@@ -82,7 +82,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
               title="Menu Views"
-              subheader="(+43%) than last year"
+              subheader="(+43%) than last Week"
               chartLabels={[
                 '01/01/2003',
                 '02/01/2003',
@@ -120,39 +120,41 @@ export default function DashboardAppPage() {
           </Grid>
           <Grid item xs={12} md={6} lg={8}>
             <AppConversionRates
-              title="Conversion Rates"
+              title="Weekly Conversion Rates"
               subheader="(+43%) than last year"
               chartData={[
-                { label: 'Italy', value: 400 },
-                { label: 'Japan', value: 430 },
-                { label: 'China', value: 448 },
-                { label: 'Canada', value: 470 },
-                { label: 'France', value: 540 },
-                { label: 'Germany', value: 580 },
-                { label: 'South Korea', value: 690 },
-                { label: 'Netherlands', value: 1100 },
-                { label: 'United States', value: 1200 },
-                { label: 'United Kingdom', value: 1380 },
+                { label: 'Monday', value: 400 },
+                { label: 'Tuesday', value: 430 },
+                { label: 'Wednesday', value: 448 },
+                { label: 'Thursday', value: 470 },
+                { label: 'Friday', value: 540 },
+                { label: 'Saturday', value: 580 },
+                { label: 'Sunday', value: 690 },
               ]}
             />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <AppCurrentSubject
-              title="Current Subject"
-              chartLabels={['English', 'History', 'Physics', 'Geography', 'Chinese', 'Math']}
-              chartData={[
-                { name: 'Series 1', data: [80, 50, 30, 40, 100, 20] },
-                { name: 'Series 2', data: [20, 30, 40, 80, 20, 80] },
-                { name: 'Series 3', data: [44, 76, 78, 13, 43, 10] },
-              ]}
-              chartColors={[...Array(6)].map(() => theme.palette.text.secondary)}
+            <AppOrderTimeline
+              title="Order Timeline"
+              list={[...Array(5)].map((_, index) => ({
+                id: faker.datatype.uuid(),
+                title: [
+                  '113, orders, $4220',
+                  'User Abebe paid $25 for Order #XF-2356',
+                  'Order #37745 from Tommorow 12:30PM',
+                  'New order placed #XF-2356',
+                  'New order placed #XF-2346',
+                ][index],
+                type: `order${index + 1}`,
+                time: faker.date.past(),
+              }))}
             />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
             <AppNewsUpdate
-              title="News Update"
+              title="New Update"
               list={[...Array(5)].map((_, index) => ({
                 id: faker.datatype.uuid(),
                 title: faker.name.jobTitle(),
@@ -164,20 +166,15 @@ export default function DashboardAppPage() {
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <AppOrderTimeline
-              title="Order Timeline"
-              list={[...Array(5)].map((_, index) => ({
-                id: faker.datatype.uuid(),
-                title: [
-                  '1983, orders, $4220',
-                  '12 Invoices have been paid',
-                  'Order #37745 from September',
-                  'New order placed #XF-2356',
-                  'New order placed #XF-2346',
-                ][index],
-                type: `order${index + 1}`,
-                time: faker.date.past(),
-              }))}
+            <AppCurrentSubject
+              title="Current Subject"
+              chartLabels={['Burgers', 'Pizza', 'Beverages', 'Soft Drinks', 'Salad', 'Other']}
+              chartData={[
+                { name: 'View', data: [80, 50, 30, 40, 100, 20] },
+                { name: 'Order', data: [20, 30, 40, 80, 20, 80] },
+                { name: 'Cancel', data: [44, 76, 78, 13, 43, 10] },
+              ]}
+              chartColors={[...Array(6)].map(() => theme.palette.text.secondary)}
             />
           </Grid>
 
@@ -213,7 +210,7 @@ export default function DashboardAppPage() {
             <AppTasks
               title="Tasks"
               list={[
-                { id: '1', label: 'Create FireStone Logo' },
+                { id: '1', label: 'Add New Menu' },
                 { id: '2', label: 'Add SCSS and JS files if required' },
                 { id: '3', label: 'Stakeholder Meeting' },
                 { id: '4', label: 'Scoping & Estimations' },

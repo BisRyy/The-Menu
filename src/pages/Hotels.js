@@ -36,14 +36,10 @@ const hotel = {
 export default function Hotels() {
   const [HOTELS, setHOTELS] = useState([]);
 
-  useEffect(() => {
-    axios.get(`/api/hotels`).then((res) => {
-      console.log('res', res.data);
-      setHOTELS(res.data);
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [HOTELS]);
+  axios.get(`/api/hotels`).then((res) => {
+    console.log('res', res.data);
+    setHOTELS(res.data);
+  });
 
 
   const Title = styled(Typography)(({ theme }) => ({
@@ -87,7 +83,7 @@ export default function Hotels() {
           mb: 4,
         }}
       >
-        <Title variant="h2"> {hotel.name} </Title>
+        <Title variant="h2"> Featured Hotels </Title>
         <Rating sx={{ pb: 4 }} name="read-only" value={hotel.star} readOnly />
         <Typography
           variant="body2"
@@ -99,15 +95,13 @@ export default function Hotels() {
             textAlign: 'center',
           }}
         >
-          {hotel.location.address}, {hotel.location.city}, {hotel.location.country}
-          <br />
-          {hotel.contact.email}, {hotel.contact.phone}
+          Add your Hotel to this list Now.
         </Typography>
       </Box>
 
-        <Container>
+        {HOTELS && <Container>
           <HotelList hotels={HOTELS} />
-        </Container>
+        </Container>}
       </Box>
     </>
   );

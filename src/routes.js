@@ -35,7 +35,7 @@ export default function Router() {
       element: <LoginPage />,
     },
     { path: 'home', element: <HomePage /> },
-    { path: 'menu', element: <Menu /> },
+    // { path: 'menu', element: <Menu /> },
     { path: 'menu/:id', element: <Menu /> },
     { path: 'hotels', element: <Hotels /> },
     {

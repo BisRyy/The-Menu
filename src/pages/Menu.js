@@ -51,6 +51,7 @@ const hotel = {
 
 export default function Menu() {
   const [MENULIST, setMENULIST] = useState([]);
+  const [hotel, setHotel] = useState([])
   const {id} = useParams();
 
   const [sortBy, setSortBy] = useState('price');
@@ -59,6 +60,11 @@ export default function Menu() {
   axios.get(`/api/menus/hotel/${id}?sortBy=${sortBy}&sortOrder=${sortOrder}`).then((res) => {
     console.log('res', res.data);
     setMENULIST(res.data);
+  });
+
+  axios.get(`/api/hotels/${id}`).then((res) => {
+    console.log('res', res.data);
+    setHotel(res.data);
   });
 
   const [openFilter, setOpenFilter] = useState(false);
@@ -99,7 +105,8 @@ export default function Menu() {
           backgroundAttachment: 'fixed',
         }}
       >
-        <Box
+        {
+         hotel.location && <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -127,7 +134,7 @@ export default function Menu() {
             <br />
             {hotel.contact.email}, {hotel.contact.phone}
           </Typography>
-        </Box>
+        </Box> }
         {/* <Box
           sx={{
             display: 'flex',
@@ -157,7 +164,8 @@ export default function Menu() {
           ))}
         </Box> */}
 
-        <Container>
+        { MENULIST &&
+          <Container>
           <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
             <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
               <Button variant="contained" error>
@@ -173,7 +181,7 @@ export default function Menu() {
             </Stack>
           </Stack>
           <MenuList menus={MENULIST} />
-        </Container>
+        </Container>}
       </Box>
     </>
   );
