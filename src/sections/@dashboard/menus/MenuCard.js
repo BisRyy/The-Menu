@@ -27,7 +27,7 @@ MenuCard.propTypes = {
 };
 
 export default function MenuCard({ menu }) {
-  const { name, image, price, availability, priceSale, description } = menu;
+  const { name, images, price, availability, priceSale, description } = menu;
 
   const [collapse, setCollapse] = useState(false);
   const [open, setOpen] = useState(false);
@@ -56,7 +56,7 @@ export default function MenuCard({ menu }) {
               {availability}
             </Label>
           )}
-          <StyledProductImg alt={name} src={image || '/assets/images/covers/cover_3.jpg'} />
+          <StyledProductImg alt={name} src={images[0] || '/assets/images/covers/cover_3.jpg'} />
         </Box>
 
         <Stack spacing={2} sx={{ p: 3 }}>

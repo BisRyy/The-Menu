@@ -17,7 +17,11 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import Input from '@mui/material/Input';
+import axios from 'axios';
+import {fill} from "@cloudinary/url-gen/actions/resize";
+import {CloudinaryImage} from '@cloudinary/url-gen';
 import Iconify from '../../../components/iconify';
+
 
 export default function AddMenuDialog({ open, onClose, onAdd }) {
   const [name, setName] = useState('Vegan Burger');
@@ -49,6 +53,25 @@ export default function AddMenuDialog({ open, onClose, onAdd }) {
   const availabilityOption = ['Available all day', 'Breakfast only', 'Lunch and dinner only'];
 
   const [ingredient, setIngredient] = useState('');
+
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const filePreview = files.map((file) => URL.createObjectURL(file));
+    setImagePreview([...imagePreview, ...filePreview]);
+    console.log(process.env.REACT_APP_CLOUD_NAME)
+
+    const formData = new FormData();
+    formData.append('file', files[0]);
+    formData.append('upload_preset', 'qtfvzmdj');
+    axios
+      .post(`https://${process.env.REACT_APP_CLOUD_API_KEY}:${process.env.REACT_APP_CLOUD_API_SECRET}@api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/image/upload`, formData)
+      .then((res) => {
+        console.log("uploaded", res.data);
+        setImages([...images, res.data.secure_url]);
+      })
+      .catch((err) => console.log(err));
+
+  };
 
   const handleAdd = () => {
     if (!name || !availability || !price || !vegetarian || !type) {
@@ -400,17 +423,7 @@ export default function AddMenuDialog({ open, onClose, onAdd }) {
               <Typography variant="body2" sx={{ mr: 1, display: { xs: 'none', sm: 'block' } }}>
                 Upload Images
               </Typography>
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={(e) => {
-                  if (e.target.files[0]) {
-                    setImages([...images, e.target.files[0]]);
-                    setImagePreview([...imagePreview, URL.createObjectURL(e.target.files[0])]);
-                  }
-                }}
-              />
+              <input type="file" accept="image/*" hidden onChange={handleImageUpload} />
             </Button>
           </Box>
         </div>

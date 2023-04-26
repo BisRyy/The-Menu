@@ -14,7 +14,7 @@ export default function MenuDetails({ menu, open, setOpen }) {
       <DialogContent>
         <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <img src={menu.image || '/assets/images/covers/cover_3.jpg'} alt={menu.name} width={700} />
+            <img src={menu.images[0] || '/assets/images/covers/cover_3.jpg'} alt={menu.name} width={700} />
           </Box>
           <Box
             sx={{
