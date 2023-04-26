@@ -14,6 +14,7 @@ import HomePage from './pages/HomePage';
 import Test from './pages/Test';
 import Menu from './pages/Menu';
 import Hotels from './pages/Hotels';
+import QRcode from './pages/QRCode';
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +29,7 @@ export default function Router() {
         { path: 'menus', element: <MenuView /> },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
+        { path: 'qr', element: <QRcode /> },
       ],
     },
     {

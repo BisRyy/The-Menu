@@ -29,6 +29,11 @@ const navConfig = [
     path: '/dashboard/user',
     icon: icon('ic_user'),
   },
+  {
+    title: 'QR Code',
+    path: '/dashboard/qr',
+    icon: <Iconify icon="eva:grid-outline" />,
+  },
   // {
   //   title: 'login',
   //   path: '/login',
