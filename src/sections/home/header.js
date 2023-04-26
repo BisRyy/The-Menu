@@ -20,7 +20,7 @@ export default function NavBar() {
     >
       <Box sx={{ display: 'flex' }}>
         <Logo />
-        <Typography variant="h4" sx={{ flexGrow: 1, display:{ sx:'none', md:'block'}, color: 'text.primary', }}>
+        <Typography variant="h4" sx={{ flexGrow: 1, display:{ xs:'none', sm:'none', md:'block'}, color: 'text.primary', }}>
           enuHub
         </Typography>
       </Box>

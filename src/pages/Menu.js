@@ -1,7 +1,13 @@
+import { useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { Box, Rating, Typography } from '@mui/material';
+import { Box, Button, Container, Rating, Stack, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import MenuCard from '../components/card/MenuCard';
-import menu from '../data/menuItem';
+// import menu from '../data/menuItem';
+import { MenuFilterSidebar, MenuList, MenuSort } from '../sections/@dashboard/menus';
+import { get } from '../redux/menuSlice';
 
 const hotel = {
   name: 'Sky Light Hotel',
@@ -44,6 +50,27 @@ const hotel = {
 // };
 
 export default function Menu() {
+  const [MENULIST, setMENULIST] = useState([]);
+  const {id} = useParams();
+
+  const [sortBy, setSortBy] = useState('price');
+  const [sortOrder, setSortOrder] = useState('desc');
+
+  axios.get(`/api/menus/hotel/${id}?sortBy=${sortBy}&sortOrder=${sortOrder}`).then((res) => {
+    console.log('res', res.data);
+    setMENULIST(res.data);
+  });
+
+  const [openFilter, setOpenFilter] = useState(false);
+
+  const handleOpenFilter = () => {
+    setOpenFilter(true);
+  };
+
+  const handleCloseFilter = () => {
+    setOpenFilter(false);
+  };
+
   const Title = styled(Typography)(({ theme }) => ({
     fontSize: '24px',
     color: 'orange',
@@ -58,7 +85,7 @@ export default function Menu() {
     <>
       <Box
         sx={{
-          minHeight: '100vh',
+          // minHeight: '100vh',
           pb: 3,
           display: 'flex',
           flexDirection: 'column',
@@ -101,7 +128,7 @@ export default function Menu() {
             {hotel.contact.email}, {hotel.contact.phone}
           </Typography>
         </Box>
-        <Box
+        {/* <Box
           sx={{
             display: 'flex',
             justifyContent: 'center',
@@ -128,7 +155,25 @@ export default function Menu() {
           {menu.map((item) => (
             <MenuCard key={item._id} menu={item} />
           ))}
-        </Box>
+        </Box> */}
+
+        <Container>
+          <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
+            <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
+              <Button variant="contained" error>
+                <MenuFilterSidebar
+                  openFilter={openFilter}
+                  onOpenFilter={handleOpenFilter}
+                  onCloseFilter={handleCloseFilter}
+                />
+              </Button>
+              <Button variant="contained">
+                <MenuSort by={sortBy} order={sortOrder} setBy={setSortBy} setOrder={setSortOrder} />
+              </Button>
+            </Stack>
+          </Stack>
+          <MenuList menus={MENULIST} />
+        </Container>
       </Box>
     </>
   );

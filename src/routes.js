@@ -13,6 +13,7 @@ import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import Test from './pages/Test';
 import Menu from './pages/Menu';
+import Hotels from './pages/Hotels';
 
 // ----------------------------------------------------------------------
 
@@ -35,6 +36,8 @@ export default function Router() {
     },
     { path: 'home', element: <HomePage /> },
     { path: 'menu', element: <Menu /> },
+    { path: 'menu/:id', element: <Menu /> },
+    { path: 'hotels', element: <Hotels /> },
     {
       element: <SimpleLayout />,
       children: [

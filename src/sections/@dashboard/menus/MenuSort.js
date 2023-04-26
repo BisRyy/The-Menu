@@ -34,7 +34,7 @@ export default function ShopProductSort({ by, order, setBy, setOrder }) {
         endIcon={<Iconify icon={open ? 'eva:chevron-up-fill' : 'eva:chevron-down-fill'} />}
       >
         Sort By:&nbsp;
-        <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
+        <Typography component="span" variant="subtitle2">
           {SORT_BY_OPTIONS.find((option) => option.sortBy === by && option.sortOrder === order).label}
         </Typography>
       </Button>
