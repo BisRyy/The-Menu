@@ -6,7 +6,7 @@ export const authSlice = createSlice({
     user: JSON.parse(window.localStorage.getItem('user')) || null,
     loading: false,
     error: null,
-    mode: 'light'
+    mode: JSON.parse(window.localStorage.getItem('mode')) || 'light',
   },
   reducers: {
     register: (state, action) => {
@@ -23,6 +23,7 @@ export const authSlice = createSlice({
     },
     changeMode: (state, action) => {
       state.mode = action.payload;
+      window.localStorage.setItem('mode', JSON.stringify(action.payload));
     }
   },
 });

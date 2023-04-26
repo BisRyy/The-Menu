@@ -26,6 +26,7 @@ const darkPalette = {
 
 export default function ThemeProvider({ children }) {
   const mode = useSelector((state) => state.auth.mode);
+  
   useEffect(() => {
     console.log('mode', mode);
   }, [mode]);
@@ -35,7 +36,7 @@ export default function ThemeProvider({ children }) {
       // palette:{
       //   mode: 'dark'
       // },
-      palette: mode === 'light' ? lightPalette : darkPalette,
+      palette: lightPalette,
       shape: { borderRadius: 6 },
       typography,
       shadows: shadows(),
@@ -46,10 +47,7 @@ export default function ThemeProvider({ children }) {
 
   const darkThemeOptions = useMemo(
     () => ({
-      palette:{
-        mode: 'dark'
-      },
-      // palette: mode === 'light' ? lightPalette : darkPalette,
+      palette: darkPalette,
       shape: { borderRadius: 6 },
       typography,
       shadows: shadows(),
