@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
 
-axios.defaults.baseURL = process.env.BASE_URL;
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 // ----------------------------------------------------------------------
 

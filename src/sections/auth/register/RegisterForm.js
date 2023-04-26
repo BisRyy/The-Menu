@@ -67,9 +67,9 @@ export default function RegisterForm() {
         star: 5,
       };
 
-      const { data } = await axios.post('https://menuserver.onrender.com/api/hotels', hotelInfo);
+      const { data } = await axios.post('/api/hotels', hotelInfo);
 
-      const user = await axios.get('https://menuserver.onrender.com/api/me', {
+      const user = await axios.get('/api/me', {
         headers: {
           ContentType: 'application/json',
           Authorization: `Bearer ${data}`,
