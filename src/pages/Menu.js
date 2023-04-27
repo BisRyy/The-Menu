@@ -57,10 +57,12 @@ export default function Menu() {
   const [sortBy, setSortBy] = useState('price');
   const [sortOrder, setSortOrder] = useState('desc');
 
-  axios.get(`/api/menus/hotel/${id}?sortBy=${sortBy}&sortOrder=${sortOrder}`).then((res) => {
-    console.log('res', res.data);
-    setMENULIST(res.data);
-  });
+  useEffect(() => {
+    axios.get(`/api/menus/hotel/${id}?sortBy=${sortBy}&sortOrder=${sortOrder}`).then((res) => {
+      console.log('res', res.data);
+      setMENULIST(res.data);
+    });
+  }, [sortBy, sortOrder]);
 
   axios.get(`/api/hotels/${id}`).then((res) => {
     console.log('res', res.data);
