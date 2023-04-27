@@ -37,9 +37,9 @@ export default function Router() {
       element: <LoginPage />,
     },
     { path: 'home', element: <HomePage /> },
+    // { path: 'menu/:id', element: <Menu /> },
+    // { path: 'hotels', element: <Hotels /> },
     // { path: 'menu', element: <Menu /> },
-    { path: 'menu/:id', element: <Menu /> },
-    { path: 'hotels', element: <Hotels /> },
     {
       element: <SimpleLayout />,
       children: [
@@ -48,6 +48,8 @@ export default function Router() {
         { path: 'register', element: <RegisterPage /> },
         { path: '404', element: <Page404 /> },
         { path: '*', element: <Navigate to="/404" /> },
+        { path: 'menu/:id', element: <Menu /> },
+        { path: 'hotels', element: <Hotels /> },
       ],
     },
     {

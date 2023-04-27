@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 
 export default function Mobile() {
   return (
@@ -32,7 +32,7 @@ export default function Mobile() {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent:'center', width:"100%"}}>
             {/* <Grid container spacing={2} sx={{ display: 'flex', alignItems: 'center', justifyContent:'center', width: '100%' }}> */}
             {/* <Grid item xs={12} md={4} maxHeight={400} sx={{display:'flex', justifyContent:'flex-end'}} > */}
-            <img src="/assets/mobile.png" alt="heroImg"  style={{ maxHeight: 300 }} />
+            <img src="/assets/mobile1.png" alt="heroImg"  style={{ maxHeight: 300 }} />
             {/* </Grid> */}
             {/* <Grid item xs={12} md={3}>
             </Grid> */}
@@ -98,13 +98,13 @@ export default function Mobile() {
               gap: 8,
             }}
           >
-            <img src="/assets/mobile.png" alt="heroImg" style={{ maxHeight: 400, marginBottom: '2rem' }} />
+            <img src="/assets/mobile1.png" alt="heroImg" style={{ maxHeight: 400, marginBottom: '2rem' }} />
             <img
-              src="/assets/mobile.png"
+              src="/assets/mobile2.png"
               alt="heroImg"
               style={{ maxHeight: 400, marginTop: { xs: '6rem', md: '0' } }}
             />
-            <img src="/assets/mobile.png" alt="heroImg" style={{ maxHeight: 400, marginBottom: '2rem' }} />
+            <img src="/assets/mobile3.png" alt="heroImg" style={{ maxHeight: 400, marginBottom: '2rem' }} />
           </Box>
           <Typography variant="h4" fontFamily="Cormorant Upright, serif" flex={1} maxWidth="500px">
             Accept orders and payments from your customers with our Digital Menu System without any hassle.
