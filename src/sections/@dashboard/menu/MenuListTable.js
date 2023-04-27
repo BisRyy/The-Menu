@@ -393,8 +393,8 @@ export default function MenuListTable() {
                         </TableCell>
 
                         <TableCell align="left">
-                          <Label color={availability === 'available' ? 'success' : 'error'}>
-                            {sentenceCase(availability || 'low')}
+                          <Label color={availability === 'Available all day' ? 'success' : 'error'}>
+                            {sentenceCase(availability || 'Not Available')}
                           </Label>
                         </TableCell>
 

@@ -40,10 +40,10 @@ export default function MenuCard({ menu }) {
             <Label
               variant="filled"
               color={
-                (availability === 'Breakfast' && 'success') ||
-                (availability === 'Lunch' && 'warning') ||
-                (availability === 'Dinner' && 'error') ||
-                'info'
+                (availability === 'Available all day' && 'success') ||
+                (availability === 'Lunch and dinner only' && 'warning') ||
+                (availability === 'Breakfast only' && 'info') ||
+                'error'
               }
               sx={{
                 zIndex: 9,
