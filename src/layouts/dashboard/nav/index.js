@@ -92,7 +92,7 @@ export default function Nav({ openNav, onCloseNav }) {
         <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
           <Box
             component="img"
-            src="/assets/images/avatars/avatar_default.jpg"
+            src={account.photoURL}
             sx={{ width: 100, position: 'absolute', top: -50, borderRadius: '50%' }}
           />
 
