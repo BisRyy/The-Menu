@@ -14,7 +14,7 @@ export default function MenuDetails({ menu, open, setOpen }) {
       <DialogContent>
         <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <img src={menu.images[0] || '/assets/images/covers/cover_3.jpg'} alt={menu.name} width={700} />
+            <img src={menu.images[0] || 'https://img.freepik.com/premium-vector/food-tray-icon-isolated-white-background-vector-illustration_736051-483.jpg'} alt={menu.name} width={700} />
           </Box>
           <Box
             sx={{
@@ -27,7 +27,7 @@ export default function MenuDetails({ menu, open, setOpen }) {
             <Typography variant="h4" component="div">
               {menu.name}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="text.secondary" maxWidth={500}>
               {menu.description}
             </Typography>
             <Typography variant="h6" component="div">

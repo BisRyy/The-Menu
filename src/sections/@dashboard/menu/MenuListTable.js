@@ -367,7 +367,7 @@ export default function MenuListTable() {
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={images[0] || '/assets/images/covers/cover_3.jpg'} />
+                            <Avatar alt={name} src={images[0] || 'https://img.freepik.com/premium-vector/food-tray-icon-isolated-white-background-vector-illustration_736051-483.jpg'} />
                             <Link
                               color="inherit"
                               underline="hover"

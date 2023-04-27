@@ -97,7 +97,7 @@ export default function RegisterPage() {
             <Typography variant="subtitle" sx={{ px: 5, mb: 5 }}>
               Manage your restaurant menu from your fingertips.{' '}
             </Typography>
-            <img src="/assets/illustrations/illustration_login.png" alt="login" />
+            <img src="/assets/illustrations/illustration_register.png" height={"80%"} alt="login" />
           </StyledSection>
         )}
       </StyledRoot>

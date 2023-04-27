@@ -56,7 +56,7 @@ export default function MenuCard({ menu }) {
               {availability}
             </Label>
           )}
-          <StyledProductImg alt={name} src={images[0] || 'https://goldbelly.imgix.net/uploads/showcase_media_asset/image/105946/vegan-burger-grill-kit-for-4.1450ccef8c44f7394c93f58450ce67b9.jpg'} />
+          <StyledProductImg alt={name} src={images[0] ||  'https://img.freepik.com/premium-vector/food-tray-icon-isolated-white-background-vector-illustration_736051-483.jpg'} />
         </Box>
 
         <Stack spacing={2} sx={{ p: 3 }}>
