@@ -1,35 +1,57 @@
 import axios from 'axios';
-import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 // @mui
-import { useDispatch, useSelector } from 'react-redux';
 import { Container, Stack, Typography } from '@mui/material';
 // components
-import { MenuSort, MenuList, MenuFilterSidebar } from '../sections/@dashboard/menus';
+import { MenuFilterSidebar, MenuList, MenuSort } from '../sections/@dashboard/menus';
 // mock
-import PRODUCTS from '../data/menuItem';
-import { get } from '../redux/menuSlice';
 
 // ----------------------------------------------------------------------
 
 export default function ProductsPage() {
-  const MENULIST = useSelector((state) => state.menu.list);
-  const dispatch = useDispatch();
-
+  const [originalMenuList, setOriginalMenuList] = useState([]); // State to hold the original unfiltered list
+  const [menuList, setMenuList] = useState([]); // State for displaying the menu
   const [sortBy, setSortBy] = useState('price');
   const [sortOrder, setSortOrder] = useState('desc');
+  const [openFilter, setOpenFilter] = useState(false);
+  const [filter, setFilter] = useState({
+    availability: [],
+    vegetarian: null,
+    type: [],
+    price: null,
+  });
 
   useEffect(() => {
-    const hotelId = JSON.parse(localStorage.getItem('user'))._id;
-    axios.get(`/api/menus/hotel/${hotelId}?sortBy=${sortBy}&sortOrder=${sortOrder}`).then((res) => {
-      console.log('res', res.data);
-      dispatch(get(res.data));
+    const id = JSON.parse(localStorage.getItem('user'))._id;
+    axios.get(`/api/menus/hotel/${id}?sortBy=${sortBy}&sortOrder=${sortOrder}`).then((res) => {
+      setOriginalMenuList(res.data); // Set the original data
+      setMenuList(res.data); // Set the filtered data
     });
+  }, [sortBy, sortOrder]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [MENULIST]);
+  // Filtering menus
+  useEffect(() => {
+    const filteredMenus = originalMenuList.filter((menu) => {
+      if (filter.type.length > 0 && !filter.type.includes(menu.type)) {
+        return false;
+      }
 
-  const [openFilter, setOpenFilter] = useState(false);
+      if (filter.availability.length > 0 && !filter.availability.includes(menu.availability)) {
+        return false;
+      }
+      if (filter.vegetarian && filter.vegetarian !== menu.vegetarian && filter.vegetarian !== 'All') {
+        return false;
+      }
+      if (filter.price) {
+        if (filter.price === 'below' && menu.price >= 250) return false;
+        if (filter.price === 'between' && (menu.price < 250 || menu.price > 600)) return false;
+        if (filter.price === 'above' && menu.price <= 600) return false;
+      }
+      return true;
+    });
+    setMenuList(filteredMenus);
+  }, [filter, originalMenuList]);
 
   const handleOpenFilter = () => {
     setOpenFilter(true);
@@ -53,6 +75,8 @@ export default function ProductsPage() {
         <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
           <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
             <MenuFilterSidebar
+              filter={filter}
+              setFilter={setFilter}
               openFilter={openFilter}
               onOpenFilter={handleOpenFilter}
               onCloseFilter={handleCloseFilter}
@@ -61,7 +85,7 @@ export default function ProductsPage() {
           </Stack>
         </Stack>
 
-        <MenuList menus={MENULIST} />
+        <MenuList menus={menuList} />
       </Container>
     </>
   );

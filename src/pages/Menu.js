@@ -1,13 +1,10 @@
-import { useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { Box, Button, Container, Rating, Stack, Typography } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { Box, Button, Container, Grid, Rating, Skeleton, Stack, Typography } from '@mui/material';
 import axios from 'axios';
-import MenuCard from '../components/card/MenuCard';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 // import menu from '../data/menuItem';
 import { MenuFilterSidebar, MenuList, MenuSort } from '../sections/@dashboard/menus';
-import { get } from '../redux/menuSlice';
 
 const hotel = {
   name: 'Sky Light Hotel',
@@ -33,43 +30,60 @@ const hotel = {
   star: 5,
 };
 
-// const menu = {
-//   hotelId: '643c8cef0f0d079baee29a4d',
-//   name: 'Veggie Burger',
-//   description: 'Delicious veggie burger with a special sauce',
-//   ingredients: ['Lentil Patty', 'Bun', 'Lettuce'],
-//   price: 9.99,
-//   allergenInformation: 'Contains gluten and dairy',
-//   nutritionalInformation: ['Protein: 15g', 'Carbs: 30g', 'Fat: 10g'],
-//   vegetarian: 'Vegetarian',
-//   images: [],
-//   type: 'Main Course',
-//   availability: 'Available all day',
-//   rating: 0,
-//   reviews: [],
-// };
-
 export default function Menu() {
-  const [MENULIST, setMENULIST] = useState([]);
-  const [hotel, setHotel] = useState([])
-  const {id} = useParams();
-
+  const [originalMenuList, setOriginalMenuList] = useState([]); // State to hold the original unfiltered list
+  const [menuList, setMenuList] = useState([]); // State for displaying the menu
+  const [hotel, setHotel] = useState({});
+  const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
   const [sortBy, setSortBy] = useState('price');
   const [sortOrder, setSortOrder] = useState('desc');
-
-  useEffect(() => {
-    axios.get(`/api/menus/hotel/${id}?sortBy=${sortBy}&sortOrder=${sortOrder}`).then((res) => {
-      console.log('res', res.data);
-      setMENULIST(res.data);
-    });
-  }, [sortBy, sortOrder]);
-
-  axios.get(`/api/hotels/${id}`).then((res) => {
-    console.log('res', res.data);
-    setHotel(res.data);
+  const [openFilter, setOpenFilter] = useState(false);
+  const [filter, setFilter] = useState({
+    availability: [],
+    vegetarian: null,
+    type: [],
+    price: null,
   });
 
-  const [openFilter, setOpenFilter] = useState(false);
+  // Fetching menu list
+  useEffect(() => {
+    axios.get(`/api/menus/hotel/${id}?sortBy=${sortBy}&sortOrder=${sortOrder}`).then((res) => {
+      setOriginalMenuList(res.data); // Set the original data
+      setMenuList(res.data); // Set the filtered data
+    });
+  }, [id, sortBy, sortOrder]);
+
+  // Fetching hotel details
+  useEffect(() => {
+    axios.get(`/api/hotels/${id}`).then((res) => {
+      setHotel(res.data);
+      setIsLoading(false);
+    });
+  }, [id]);
+
+  // Filtering menus
+  useEffect(() => {
+    const filteredMenus = originalMenuList.filter((menu) => {
+      if (filter.type.length > 0 && !filter.type.includes(menu.type)) {
+        return false;
+      }
+
+      if (filter.availability.length > 0 && !filter.availability.includes(menu.availability)) {
+        return false;
+      }
+      if (filter.vegetarian && filter.vegetarian !== menu.vegetarian && filter.vegetarian !== 'All') {
+        return false;
+      }
+      if (filter.price) {
+        if (filter.price === 'below' && menu.price >= 250) return false;
+        if (filter.price === 'between' && (menu.price < 250 || menu.price > 600)) return false;
+        if (filter.price === 'above' && menu.price <= 600) return false;
+      }
+      return true;
+    });
+    setMenuList(filteredMenus);
+  }, [filter, originalMenuList]);
 
   const handleOpenFilter = () => {
     setOpenFilter(true);
@@ -93,7 +107,7 @@ export default function Menu() {
     <>
       <Box
         sx={{
-          // minHeight: '100vh',
+          minHeight: '100vh',
           pb: 3,
           display: 'flex',
           flexDirection: 'column',
@@ -102,88 +116,77 @@ export default function Menu() {
           // border: "2px solid red",
           backgroundImage: `url(/assets/images/hotel_cover.jpg)`,
           backgroundRepeat: 'no-repeat',
+
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed',
         }}
       >
-        {
-         hotel.location && <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            // border: "2px solid red",
-            width: '100%',
-            minHeight: '40vh',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          }}
-        >
-          <Title variant="h2"> {hotel.name} </Title>
-          <Rating sx={{ pb: 4 }} name="read-only" value={hotel.star} readOnly />
-          <Typography
-            variant="body2"
+        {hotel.location && (
+          <Box
             sx={{
-              fontSize: '18px',
-              color: 'white',
-              mb: 4,
-              maxWidth: 700,
-              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              // border: "2px solid red",
+              width: '100%',
+              minHeight: '40vh',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
             }}
           >
-            {hotel.location.address}, {hotel.location.city}, {hotel.location.country}
-            <br />
-            {hotel.contact.email}, {hotel.contact.phone}
-          </Typography>
-        </Box> }
-        {/* <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            // alignItems: 'center',
-            padding: 5,
-            flexWrap: 'wrap',
-            width: '100%',
-            gap: 2,
-            height: '60vh',
-          }}
-        />
+            <Title variant="h2"> {hotel.name} </Title>
+            <Rating sx={{ pb: 4 }} name="read-only" value={hotel.star} readOnly />
+            <Typography
+              variant="body2"
+              sx={{
+                fontSize: '18px',
+                color: 'white',
+                mb: 4,
+                maxWidth: 700,
+                textAlign: 'center',
+              }}
+            >
+              {hotel.location.address}, {hotel.location.city}, {hotel.location.country}
+              <br />
+              {hotel.contact.email}, {hotel.contact.phone}
+            </Typography>
+          </Box>
+        )}
 
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            // alignItems: 'center',
-            padding: 5,
-            flexWrap: 'wrap',
-            width: '100%',
-            gap: 2,
-          }}
-        >
-          {menu.map((item) => (
-            <MenuCard key={item._id} menu={item} />
-          ))}
-        </Box> */}
-
-        { MENULIST &&
-          <Container>
-          <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
-            <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
-              <Button variant="contained" error>
-                <MenuFilterSidebar
-                  openFilter={openFilter}
-                  onOpenFilter={handleOpenFilter}
-                  onCloseFilter={handleCloseFilter}
-                />
-              </Button>
-              <Button variant="contained">
-                <MenuSort by={sortBy} order={sortOrder} setBy={setSortBy} setOrder={setSortOrder} />
-              </Button>
+        <Container>
+          {isLoading ? (
+            <Skeleton variant="rectangular" width="100%" height={300} />
+          ) : (
+            <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
+              <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
+                <Button variant="contained" error>
+                  <MenuFilterSidebar
+                    openFilter={openFilter}
+                    onOpenFilter={handleOpenFilter}
+                    onCloseFilter={handleCloseFilter}
+                    filter={filter}
+                    setFilter={setFilter}
+                  />
+                </Button>
+                <Button variant="contained">
+                  <MenuSort by={sortBy} order={sortOrder} setBy={setSortBy} setOrder={setSortOrder} />
+                </Button>
+              </Stack>
             </Stack>
-          </Stack>
-          <MenuList menus={MENULIST} />
-        </Container>}
+          )}
+          {isLoading ? (
+            <Grid container spacing={3}>
+              {Array.from({ length: 6 }).map((_, index) => (
+                <Grid key={index} item xs={6} sm={4} md={3}>
+                  <Skeleton variant="rectangular" width="100%" height={118} sx={{ borderRadius: 1 }} />
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <MenuList menus={menuList} />
+          )}
+        </Container>
       </Box>
     </>
   );

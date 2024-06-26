@@ -1,17 +1,21 @@
 import styled from '@emotion/styled';
 import { Box, Container, Rating, Typography } from '@mui/material';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import menu from '../data/menuItem';
 import HotelList from '../sections/@dashboard/menus/HotelList';
 
 export default function Hotels() {
   const [HOTELS, setHOTELS] = useState([]);
-
-  axios.get(`/api/hotels?sortOrder=asc`).then((res) => {
-    console.log('res', res.data);
-    setHOTELS(res.data.slice(0, 4));
-  });
+  useEffect(() => {
+    axios
+      .get(`/api/hotels?sortOrder=asc`)
+      .then((res) => {
+        console.log('res', res.data);
+        setHOTELS(res.data.slice(0, 4));
+      })
+      .catch((err) => console.error('Failed to fetch hotels:', err));
+  }, []);
 
   const Title = styled(Typography)(({ theme }) => ({
     fontSize: '24px',

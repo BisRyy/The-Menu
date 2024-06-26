@@ -1,52 +1,62 @@
-import PropTypes from 'prop-types';
-// @mui
 import {
   Box,
-  Radio,
-  Stack,
   Button,
-  Drawer,
-  Rating,
-  Divider,
   Checkbox,
+  Divider,
+  Drawer,
+  FormControlLabel,
   FormGroup,
   IconButton,
-  Typography,
+  Radio,
   RadioGroup,
-  FormControlLabel,
+  Stack,
+  Typography,
 } from '@mui/material';
-// components
 import Iconify from '../../../components/iconify';
 import Scrollbar from '../../../components/scrollbar';
-import { ColorMultiPicker } from '../../../components/color-utils';
 
-// ----------------------------------------------------------------------
-
-export const SORT_BY_OPTIONS = [
+const SORT_BY_OPTIONS = [
   { value: 'featured', label: 'Featured' },
   { value: 'newest', label: 'Newest' },
   { value: 'priceDesc', label: 'Price: High-Low' },
   { value: 'priceAsc', label: 'Price: Low-High' },
 ];
-export const FILTER_TYPE_OPTIONS = ['Breakfast', 'Lunch', 'Dinner'];
-export const FILTER_VEGETERIAN_OPTIONS = ['Vegeterian', 'Vegan', 'Non-Vegetarian'];
-export const FILTER_RATING_OPTIONS = ['up4Star', 'up3Star', 'up2Star', 'up1Star'];
-export const FILTER_PRICE_OPTIONS = [
-  { value: 'below', label: 'Below $25' },
-  { value: 'between', label: 'Between $25 - $75' },
-  { value: 'above', label: 'Above $75' },
+
+const FILTER_AVABILITY_OPTIONS = ['Available all day', 'Breakfast only', 'Lunch and dinner only'];
+const FILTER_VEGETARIAN_OPTIONS = ['All', 'Vegetarian', 'Vegan', 'Non-Vegetarian'];
+const FILTER_TYPE_OPTIONS = ['Main Course', 'Appetizer', 'Dessert', 'Beverage'];
+const FILTER_PRICE_OPTIONS = [
+  { value: 'null', label: 'All' },
+  { value: 'below', label: 'Below 250 birr' },
+  { value: 'between', label: 'Between 250 - 600 birr' },
+  { value: 'above', label: 'Above 600 birr' },
 ];
 
+export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFilter, filter, setFilter }) {
+  console.log('filter', filter);
+  const handleTypeChange1 = (event) => {
+    const { checked, value } = event.target;
+    setFilter((prev) => ({
+      ...prev,
+      type: checked ? [...prev.type, value] : prev.type.filter((t) => t !== value),
+    }));
+  };
 
-// ----------------------------------------------------------------------
+  const handleTypeChange2 = (event) => {
+    const { checked, value } = event.target;
+    setFilter((prev) => ({
+      ...prev,
+      availability: checked ? [...prev.availability, value] : prev.availability.filter((t) => t !== value),
+    }));
+  };
 
-ShopFilterSidebar.propTypes = {
-  openFilter: PropTypes.bool,
-  onOpenFilter: PropTypes.func,
-  onCloseFilter: PropTypes.func,
-};
+  const handleRadioChange = (key) => (event) => {
+    setFilter({
+      ...filter,
+      [key]: event.target.value,
+    });
+  };
 
-export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFilter }) {
   return (
     <>
       <Button disableRipple color="inherit" endIcon={<Iconify icon="ic:round-filter-list" />} onClick={onOpenFilter}>
@@ -76,11 +86,37 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
           <Stack spacing={3} sx={{ p: 3 }}>
             <div>
               <Typography variant="subtitle1" gutterBottom>
-                Availability
+                Type
               </Typography>
               <FormGroup>
                 {FILTER_TYPE_OPTIONS.map((item) => (
-                  <FormControlLabel key={item} control={<Checkbox />} label={item} />
+                  <FormControlLabel
+                    key={item}
+                    control={
+                      <Checkbox checked={filter.type.includes(item)} onChange={handleTypeChange1} value={item} />
+                    }
+                    label={item}
+                  />
+                ))}
+              </FormGroup>
+            </div>
+            <div>
+              <Typography variant="subtitle1" gutterBottom>
+                Availability
+              </Typography>
+              <FormGroup>
+                {FILTER_AVABILITY_OPTIONS.map((item) => (
+                  <FormControlLabel
+                    key={item}
+                    control={
+                      <Checkbox
+                        checked={filter.availability.includes(item)}
+                        onChange={handleTypeChange2}
+                        value={item}
+                      />
+                    }
+                    label={item}
+                  />
                 ))}
               </FormGroup>
             </div>
@@ -89,7 +125,7 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
               <Typography variant="subtitle1" gutterBottom>
                 Price
               </Typography>
-              <RadioGroup>
+              <RadioGroup value={filter.price} onChange={handleRadioChange('price')}>
                 {FILTER_PRICE_OPTIONS.map((item) => (
                   <FormControlLabel key={item.value} value={item.value} control={<Radio />} label={item.label} />
                 ))}
@@ -100,40 +136,9 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
               <Typography variant="subtitle1" gutterBottom>
                 Vegetarian
               </Typography>
-              <RadioGroup>
-                {FILTER_VEGETERIAN_OPTIONS.map((item) => (
+              <RadioGroup value={filter.vegetarian} onChange={handleRadioChange('vegetarian')}>
+                {FILTER_VEGETARIAN_OPTIONS.map((item) => (
                   <FormControlLabel key={item} value={item} control={<Radio />} label={item} />
-                ))}
-              </RadioGroup>
-            </div>
-
-            <div>
-              <Typography variant="subtitle1" gutterBottom>
-                Rating
-              </Typography>
-              <RadioGroup>
-                {FILTER_RATING_OPTIONS.map((item, index) => (
-                  <FormControlLabel
-                    key={item}
-                    value={item}
-                    control={
-                      <Radio
-                        disableRipple
-                        color="default"
-                        icon={<Rating readOnly value={4 - index} />}
-                        checkedIcon={<Rating readOnly value={4 - index} />}
-                        sx={{
-                          '&:hover': { bgcolor: 'transparent' },
-                        }}
-                      />
-                    }
-                    label="& Up"
-                    sx={{
-                      my: 0.5,
-                      borderRadius: 1,
-                      '&:hover': { opacity: 0.48 },
-                    }}
-                  />
                 ))}
               </RadioGroup>
             </div>
@@ -146,6 +151,7 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
             size="large"
             type="submit"
             color="inherit"
+            onClick={() => setFilter({ availability: [], vegetarian: null, type: [], price: null })}
             variant="outlined"
             startIcon={<Iconify icon="ic:round-clear-all" />}
           >
