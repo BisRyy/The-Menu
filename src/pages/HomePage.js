@@ -1,8 +1,8 @@
-import Hero from '../sections/home/hero';
 import Footer from '../sections/home/footer';
-import Mobile from '../sections/home/mobile';
 import NavBar from '../sections/home/header';
-import Hotels from './Hotels'
+import Hero from '../sections/home/hero';
+import Mobile from '../sections/home/mobile';
+import Hotels from './Hotels';
 
 export default function HomePage() {
   return (

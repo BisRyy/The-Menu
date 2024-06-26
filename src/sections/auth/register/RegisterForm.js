@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 // @mui
-import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, Box, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { Box, Checkbox, IconButton, InputAdornment, Link, Stack, TextField, Typography } from '@mui/material';
 // components
 import Iconify from '../../../components/iconify';
 import { register } from '../../../redux/authSlice';
@@ -80,6 +80,7 @@ export default function RegisterForm() {
       dispatch(register({ ...user.data, token: data }));
     } catch (error) {
       console.log(error.response.data);
+      alert(error.response.data);
     } finally {
       setLoading(false);
     }

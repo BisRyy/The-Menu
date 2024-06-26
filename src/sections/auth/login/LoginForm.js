@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 // @mui
-import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, FormControlLabel } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { Checkbox, FormControlLabel, IconButton, InputAdornment, Link, Stack, TextField } from '@mui/material';
 // components
 import Iconify from '../../../components/iconify';
-import { login } from '../../../redux/authSlice';
 import account from '../../../data/account';
+import { login } from '../../../redux/authSlice';
 
 // ----------------------------------------------------------------------
 
@@ -60,6 +60,7 @@ export default function LoginForm() {
       navigate('/dashboard', { replace: true });
     } catch (error) {
       console.log(error.response.data);
+      alert(error.response.data);
     } finally {
       setLoading(false);
     }
