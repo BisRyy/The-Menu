@@ -138,7 +138,7 @@ const Footer = () => {
         </CustomContainer>
       </CustomContainer>
       <Typography sx={{ textAlign: 'center', mt: 5 }}>
-        Made with ❤️ by{' '}
+        {/* Made with ❤️ by{' '}
         <FooterLink>
           <Link href="https://bisrat.tech" target="_blank" rel="noopener">
             Bisrat Kebere
@@ -149,9 +149,8 @@ const Footer = () => {
           <Link href="https://github.com/duressa-feyissa" target="_blank" rel="noopener">
             Duressa Feyissa
           </Link>
-        </FooterLink>
-        <br />
-        © 2023 All rights reserved.
+        </FooterLink> */}
+        <br />© 2025 All rights reserved.
       </Typography>
     </Box>
   );

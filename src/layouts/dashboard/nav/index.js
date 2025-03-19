@@ -110,15 +110,15 @@ export default function Nav({ openNav, onCloseNav }) {
             Log out
           </Button>
           <Typography sx={{ textAlign: 'center', mt: 5 }}>
-            Made with ❤️<br /> by{' '}
+            {/* Made with ❤️<br /> by{' '}
             <Link href="https://bisrat.tech" target="_blank" rel="noopener">
               Bisrat Kebere
             </Link>{' '}
             <br /> and{' '}
             <Link href="https://github.com/duressa-feyissa" target="_blank" rel="noopener">
               Duressa Feyissa
-            </Link>
-            <br />© 2023 All rights reserved.
+            </Link> */}
+            <br />© 2025 All rights reserved.
           </Typography>
         </Stack>
       </Box>

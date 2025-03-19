@@ -12,6 +12,7 @@ import {
   IconButton,
   InputAdornment,
   Select,
+  Switch,
   TextField,
   Typography,
   createFilterOptions,
@@ -21,8 +22,7 @@ import Input from '@mui/material/Input';
 import Iconify from '../../../components/iconify';
 
 export default function EditMenuDialog({ open, onClose, onEdit, data }) {
-
-  console.log("data", data);
+  console.log('data', data);
 
   const [name, setName] = useState('Vegan Burger');
   const [availability, setAvailability] = useState('Available all day');
@@ -89,19 +89,22 @@ export default function EditMenuDialog({ open, onClose, onEdit, data }) {
     // formData.append('files', images);
 
     // onAdd(formData);
-    onEdit({
-      name,
-      availability,
-      price,
-      description,
-      ingredients,
-      allergenInformation,
-      nutritionalInformation,
-      vegetarian,
-      images,
-      type,
-      hotelId: JSON.parse(localStorage.getItem('user'))._id,
-    },  data._id);
+    onEdit(
+      {
+        name,
+        availability,
+        price,
+        description,
+        ingredients,
+        allergenInformation,
+        nutritionalInformation,
+        vegetarian,
+        images,
+        type,
+        hotelId: JSON.parse(localStorage.getItem('user'))._id,
+      },
+      data._id
+    );
 
     // setName('');
     // setAvailability('Available all day');
@@ -134,9 +137,16 @@ export default function EditMenuDialog({ open, onClose, onEdit, data }) {
           sx={{
             mb: 3,
             color: 'text.secondary',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}
         >
           Please fill all fields
+          <Box>
+            Available
+            <Switch defaultChecked />
+          </Box>
         </DialogContentText>
 
         {images.length > 0 && (

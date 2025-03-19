@@ -11,6 +11,7 @@ import {
   IconButton,
   InputAdornment,
   Select,
+  Switch,
   TextField,
   Typography,
   createFilterOptions,
@@ -18,10 +19,9 @@ import {
 import { useState } from 'react';
 import Input from '@mui/material/Input';
 import axios from 'axios';
-import {fill} from "@cloudinary/url-gen/actions/resize";
-import {CloudinaryImage} from '@cloudinary/url-gen';
+import { fill } from '@cloudinary/url-gen/actions/resize';
+import { CloudinaryImage } from '@cloudinary/url-gen';
 import Iconify from '../../../components/iconify';
-
 
 export default function AddMenuDialog({ open, onClose, onAdd }) {
   const [name, setName] = useState('Vegan Burger');
@@ -58,19 +58,21 @@ export default function AddMenuDialog({ open, onClose, onAdd }) {
     const files = Array.from(e.target.files);
     const filePreview = files.map((file) => URL.createObjectURL(file));
     setImagePreview([...imagePreview, ...filePreview]);
-    console.log(process.env.REACT_APP_CLOUD_NAME)
+    console.log(process.env.REACT_APP_CLOUD_NAME);
 
     const formData = new FormData();
     formData.append('file', files[0]);
     formData.append('upload_preset', 'qtfvzmdj');
     axios
-      .post(`https://${process.env.REACT_APP_CLOUD_API_KEY}:${process.env.REACT_APP_CLOUD_API_SECRET}@api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/image/upload`, formData)
+      .post(
+        `https://${process.env.REACT_APP_CLOUD_API_KEY}:${process.env.REACT_APP_CLOUD_API_SECRET}@api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/image/upload`,
+        formData
+      )
       .then((res) => {
-        console.log("uploaded", res.data);
+        console.log('uploaded', res.data);
         setImages([...images, res.data.secure_url]);
       })
       .catch((err) => console.log(err));
-
   };
 
   const handleAdd = () => {
@@ -138,9 +140,16 @@ export default function AddMenuDialog({ open, onClose, onAdd }) {
           sx={{
             mb: 3,
             color: 'text.secondary',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}
         >
           Please fill all fields
+          <Box>
+            Available
+            <Switch defaultChecked />
+          </Box>
         </DialogContentText>
 
         {images.length > 0 && (
